@@ -1,3 +1,11 @@
+Daylon's Japanese translation practice app.
+
+# User Notes
+
+Visit the deployed version at: https://japanese-studying.vercel.app/translation-practice
+
+# Developer Notes
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
