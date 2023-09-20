@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Layout from '../components/layout'
 
 class TranslationApp extends Component {
   constructor(props) {
@@ -198,7 +199,7 @@ class TranslationApp extends Component {
     const currentTranslation = translations[currentIndex];
 
     return (
-      <div>
+      <Layout>
         <div>
           {/* Japanese text to display to the user */}
           <p>{currentTranslation.japanese}</p>
@@ -236,7 +237,7 @@ class TranslationApp extends Component {
             </p>
           )}
         </div>
-      </div>
+      </Layout>
     );
   }
 }
