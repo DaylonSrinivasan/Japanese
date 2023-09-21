@@ -19,7 +19,7 @@ export const VERB_CONJUGATIONS = [
       "conjugation": "食べません",
       "sentence": {
         "japanese": "寿司を食べません",
-        "english": "I don't eat sushi politely.",
+        "english": "I don't eat sushi.",
       },
     },
     "past": {
@@ -47,7 +47,7 @@ export const VERB_CONJUGATIONS = [
       "conjugation": "食べませんでした",
       "sentence": {
         "japanese": "先週、寿司を食べませんでした",
-        "english": "I didn't eat sushi politely last week.",
+        "english": "I didn't eat sushi last week.",
       },
     },
     "te": {
@@ -78,7 +78,7 @@ export const VERB_CONJUGATIONS = [
       "conjugation": "飲みません",
       "sentence": {
         "japanese": "お茶を飲みません",
-        "english": "I don't drink tea politely.",
+        "english": "I don't drink tea.",
       },
     },
     "past": {
@@ -137,21 +137,21 @@ export const VERB_CONJUGATIONS = [
       "conjugation": "しません",
       "sentence": {
         "japanese": "掃除をしません",
-        "english": "I don't do cleaning politely.",
+        "english": "I don't do cleaning.",
       },
     },
     "past": {
       "conjugation": "した",
       "sentence": {
         "japanese": "昨日、運動をした",
-        "english": "I did exercise yesterday.",
+        "english": "I exercised yesterday.",
       },
     },
     "past_negative": {
       "conjugation": "しなかった",
       "sentence": {
         "japanese": "昨日、読書をしなかった",
-        "english": "I didn't do reading yesterday.",
+        "english": "I didn't read yesterday.",
       },
     },
     "past_polite": {
@@ -165,7 +165,7 @@ export const VERB_CONJUGATIONS = [
       "conjugation": "しませんでした",
       "sentence": {
         "japanese": "先週、遊びをしませんでした",
-        "english": "I didn't do playing politely last week.",
+        "english": "I didn't play last week.",
       },
     },
     "te": {
@@ -182,21 +182,21 @@ export const VERB_CONJUGATIONS = [
       "conjugation": "こない",
       "sentence": {
         "japanese": "友達がこない",
-        "english": "My friends don't come.",
+        "english": "My friends aren't coming.",
       },
     },
     "polite": {
       "conjugation": "きます",
       "sentence": {
         "japanese": "彼女がきます",
-        "english": "She comes.",
+        "english": "She's coming.",
       },
     },
     "polite_negative": {
       "conjugation": "きません",
       "sentence": {
         "japanese": "先生がきません",
-        "english": "The teacher doesn't come politely.",
+        "english": "The teacher isn't coming.",
       },
     },
     "past": {
@@ -224,7 +224,7 @@ export const VERB_CONJUGATIONS = [
       "conjugation": "きませんでした",
       "sentence": {
         "japanese": "先週、兄がきませんでした",
-        "english": "My brother didn't come politely last week.",
+        "english": "My brother didn't come last week.",
       },
     },
     "te": {
@@ -255,7 +255,7 @@ export const VERB_CONJUGATIONS = [
       "conjugation": "買いません",
       "sentence": {
         "japanese": "車を買いません",
-        "english": "I don't buy cars politely.",
+        "english": "I don't buy cars.",
       },
     },
     "past": {
@@ -394,14 +394,14 @@ export const VERB_CONJUGATIONS = [
       "conjugation": "撮りました",
       "sentence": {
         "japanese": "先週、映画を撮りました",
-        "english": "I took movies last week.",
+        "english": "I shot a movie last week.",
       },
     },
     "past_polite_negative": {
       "conjugation": "撮りませんでした",
       "sentence": {
         "japanese": "先週、テレビを撮りませんでした",
-        "english": "I didn't take TV politely last week.",
+        "english": "I didn't watch TV last week.",
       },
     },
     "te": {
@@ -432,7 +432,7 @@ export const VERB_CONJUGATIONS = [
       "conjugation": "ありません",
       "sentence": {
         "japanese": "鳥がありません",
-        "english": "I don't have a bird politely.",
+        "english": "I don't have a bird.",
       },
     },
     "past": {
