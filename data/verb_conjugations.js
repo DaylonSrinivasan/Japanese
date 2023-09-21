@@ -1,122 +1,828 @@
-export const VERB_CONJUGATIONS = [{
-  "dictionary": "たべる",
-  "negative": "たべない",
-  "polite": "たべます",
-  "polite_negative": "たべません",
-  "past": "たべた",
-  "past_negative": "たべなかった",
-  "past_polite": "たべました",
-  "past_polite_negative": "たべませんでした",
-  "te": "たべて"
-},
-{
-  "dictionary": "のむ",
-  "negative": "のまない",
-  "polite": "のみます",
-  "polite_negative": "のみません",
-  "past": "のんだ",
-  "past_negative": "のまなかった",
-  "past_polite": "のみました",
-  "past_polite_negative": "のみませんでした",
-  "te": "のんで"
-},
-{
-  "dictionary": "ある",
-  "negative": "ない",
-  "polite": "あります",
-  "polite_negative": "ありません",
-  "past": "あった",
-  "past_negative": "なかった",
-  "past_polite": "ありました",
-  "past_polite_negative": "ありませんでした",
-  "te": "あって"
-},
-{
-  "dictionary": "くる",
-  "negative": "こない",
-  "polite": "きます",
-  "polite_negative": "きません",
-  "past": "きた",
-  "past_negative": "こなかった",
-  "past_polite": "きました",
-  "past_polite_negative": "きませんでした",
-  "te": "きて"
-},
-{
-  "dictionary": "いく",
-  "negative": "いかない",
-  "polite": "いきます",
-  "polite_negative": "いきません",
-  "past": "いった",
-  "past_negative": "いかなかった",
-  "past_polite": "いきました",
-  "past_polite_negative": "いきませんでした",
-  "te": "いって"
-},
-{
-  "dictionary": "のぼる",
-  "negative": "のぼらない",
-  "polite": "のぼります",
-  "polite_negative": "のぼりません",
-  "past": "のぼった",
-  "past_negative": "のぼらなかった",
-  "past_polite": "のぼりました",
-  "past_polite_negative": "のぼりませんでした",
-  "te": "のぼって"
-},
-{
-  "dictionary": "ねる",
-  "negative": "ねらない",
-  "polite": "ねります",
-  "polite_negative": "ねりません",
-  "past": "ねた",
-  "past_negative": "ねらなかった",
-  "past_polite": "ねりました",
-  "past_polite_negative": "ねりませんでした",
-  "te": "ねて"
-},
-{
-  "dictionary": "よむ",
-  "negative": "よまない",
-  "polite": "よみます",
-  "polite_negative": "よみません",
-  "past": "よんだ",
-  "past_negative": "よまなかった",
-  "past_polite": "よみました",
-  "past_polite_negative": "よみませんでした",
-  "te": "よんで"
-},
-{
-  "dictionary": "かく",
-  "negative": "かかない",
-  "polite": "かきます",
-  "polite_negative": "かきません",
-  "past": "かいた",
-  "past_negative": "かかなかった",
-  "past_polite": "かきました",
-  "past_polite_negative": "かきませんでした",
-  "te": "かいて"
-},
-{
-  "dictionary": "はしる",
-  "negative": "はしらない",
-  "polite": "はしります",
-  "polite_negative": "はしりません",
-  "past": "はしった",
-  "past_negative": "はしらなかった",
-  "past_polite": "はしりました",
-  "past_polite_negative": "はしりませんでした",
-  "te": "はしって"
-},
-{
-  "dictionary": "およぐ",
-  "negative": "およがない",
-  "polite": "およぎます",
-  "polite_negative": "およぎません",
-  "past": "およいだ",
-  "past_negative": "およがなかった",
-  "past_polite": "およぎました",
-  "past_polite_negative": "およぎませんでした",
-  "te": "およいで"
-}
-]
+export const VERB_CONJUGATIONS = [
+  {
+    "dictionary": "食べる",
+    "negative": {
+      "conjugation": "食べない",
+      "sentence": {
+        "japanese": "寿司を食べない",
+        "english": "I don't eat sushi.",
+      },
+    },
+    "polite": {
+      "conjugation": "食べます",
+      "sentence": {
+        "japanese": "寿司を食べます",
+        "english": "I eat sushi.",
+      },
+    },
+    "polite_negative": {
+      "conjugation": "食べません",
+      "sentence": {
+        "japanese": "寿司を食べません",
+        "english": "I don't eat sushi politely.",
+      },
+    },
+    "past": {
+      "conjugation": "食べた",
+      "sentence": {
+        "japanese": "昨日、寿司を食べた",
+        "english": "I ate sushi yesterday.",
+      },
+    },
+    "past_negative": {
+      "conjugation": "食べなかった",
+      "sentence": {
+        "japanese": "昨日、寿司を食べなかった",
+        "english": "I didn't eat sushi yesterday.",
+      },
+    },
+    "past_polite": {
+      "conjugation": "食べました",
+      "sentence": {
+        "japanese": "先週、寿司を食べました",
+        "english": "I ate sushi last week.",
+      },
+    },
+    "past_polite_negative": {
+      "conjugation": "食べませんでした",
+      "sentence": {
+        "japanese": "先週、寿司を食べませんでした",
+        "english": "I didn't eat sushi politely last week.",
+      },
+    },
+    "te": {
+      "conjugation": "食べて",
+      "sentence": {
+        "japanese": "友達と寿司を食べています",
+        "english": "I am eating sushi with friends.",
+      },
+    },
+  },
+  {
+    "dictionary": "飲む",
+    "negative": {
+      "conjugation": "飲まない",
+      "sentence": {
+        "japanese": "コーヒーを飲まない",
+        "english": "I don't drink coffee.",
+      },
+    },
+    "polite": {
+      "conjugation": "飲みます",
+      "sentence": {
+        "japanese": "お茶を飲みます",
+        "english": "I drink tea.",
+      },
+    },
+    "polite_negative": {
+      "conjugation": "飲みません",
+      "sentence": {
+        "japanese": "お茶を飲みません",
+        "english": "I don't drink tea politely.",
+      },
+    },
+    "past": {
+      "conjugation": "飲んだ",
+      "sentence": {
+        "japanese": "昨夜、ビールを飲んだ",
+        "english": "I drank beer last night.",
+      },
+    },
+    "past_negative": {
+      "conjugation": "飲まなかった",
+      "sentence": {
+        "japanese": "昨夜、ワインを飲まなかった",
+        "english": "I didn't drink wine last night.",
+      },
+    },
+    "past_polite": {
+      "conjugation": "飲みました",
+      "sentence": {
+        "japanese": "昨日、ジュースを飲みました",
+        "english": "I drank juice yesterday.",
+      },
+    },
+    "past_polite_negative": {
+      "conjugation": "飲みませんでした",
+      "sentence": {
+        "japanese": "昨日、お茶を飲みませんでした",
+        "english": "I didn't drink tea yesterday.",
+      },
+    },
+    "te": {
+      "conjugation": "飲んで",
+      "sentence": {
+        "japanese": "友達とコーヒーを飲んでいます",
+        "english": "I am drinking coffee with friends.",
+      },
+    },
+  },
+  {
+    "dictionary": "する",
+    "negative": {
+      "conjugation": "しない",
+      "sentence": {
+        "japanese": "宿題をしない",
+        "english": "I don't do homework.",
+      },
+    },
+    "polite": {
+      "conjugation": "します",
+      "sentence": {
+        "japanese": "仕事をします",
+        "english": "I do work.",
+      },
+    },
+    "polite_negative": {
+      "conjugation": "しません",
+      "sentence": {
+        "japanese": "掃除をしません",
+        "english": "I don't do cleaning politely.",
+      },
+    },
+    "past": {
+      "conjugation": "した",
+      "sentence": {
+        "japanese": "昨日、運動をした",
+        "english": "I did exercise yesterday.",
+      },
+    },
+    "past_negative": {
+      "conjugation": "しなかった",
+      "sentence": {
+        "japanese": "昨日、読書をしなかった",
+        "english": "I didn't do reading yesterday.",
+      },
+    },
+    "past_polite": {
+      "conjugation": "しました",
+      "sentence": {
+        "japanese": "先週、研究をしました",
+        "english": "I did research last week.",
+      },
+    },
+    "past_polite_negative": {
+      "conjugation": "しませんでした",
+      "sentence": {
+        "japanese": "先週、遊びをしませんでした",
+        "english": "I didn't do playing politely last week.",
+      },
+    },
+    "te": {
+      "conjugation": "して",
+      "sentence": {
+        "japanese": "友達と買い物をしています",
+        "english": "I am shopping with friends.",
+      },
+    },
+  },
+  {
+    "dictionary": "くる",
+    "negative": {
+      "conjugation": "こない",
+      "sentence": {
+        "japanese": "友達がこない",
+        "english": "My friends don't come.",
+      },
+    },
+    "polite": {
+      "conjugation": "きます",
+      "sentence": {
+        "japanese": "彼女がきます",
+        "english": "She comes.",
+      },
+    },
+    "polite_negative": {
+      "conjugation": "きません",
+      "sentence": {
+        "japanese": "先生がきません",
+        "english": "The teacher doesn't come politely.",
+      },
+    },
+    "past": {
+      "conjugation": "きた",
+      "sentence": {
+        "japanese": "昨日、友達がきた",
+        "english": "My friends came yesterday.",
+      },
+    },
+    "past_negative": {
+      "conjugation": "こなかった",
+      "sentence": {
+        "japanese": "昨日、彼がこなかった",
+        "english": "He didn't come yesterday.",
+      },
+    },
+    "past_polite": {
+      "conjugation": "きました",
+      "sentence": {
+        "japanese": "先週、姉がきました",
+        "english": "My sister came last week.",
+      },
+    },
+    "past_polite_negative": {
+      "conjugation": "きませんでした",
+      "sentence": {
+        "japanese": "先週、兄がきませんでした",
+        "english": "My brother didn't come politely last week.",
+      },
+    },
+    "te": {
+      "conjugation": "きて",
+      "sentence": {
+        "japanese": "友達と遊びにきています",
+        "english": "I have friends coming to play.",
+      },
+    },
+  },
+  {
+    "dictionary": "買う",
+    "negative": {
+      "conjugation": "買わない",
+      "sentence": {
+        "japanese": "本を買わない",
+        "english": "I don't buy books.",
+      },
+    },
+    "polite": {
+      "conjugation": "買います",
+      "sentence": {
+        "japanese": "服を買います",
+        "english": "I buy clothes.",
+      },
+    },
+    "polite_negative": {
+      "conjugation": "買いません",
+      "sentence": {
+        "japanese": "車を買いません",
+        "english": "I don't buy cars politely.",
+      },
+    },
+    "past": {
+      "conjugation": "買った",
+      "sentence": {
+        "japanese": "昨日、ゲームを買った",
+        "english": "I bought a game yesterday.",
+      },
+    },
+    "past_negative": {
+      "conjugation": "買わなかった",
+      "sentence": {
+        "japanese": "昨日、DVDを買わなかった",
+        "english": "I didn't buy a DVD yesterday.",
+      },
+    },
+    "past_polite": {
+      "conjugation": "買いました",
+      "sentence": {
+        "japanese": "先週、アクセサリーを買いました",
+        "english": "I bought accessories last week.",
+      },
+    },
+    "past_polite_negative": {
+      "conjugation": "買いませんでした",
+      "sentence": {
+        "japanese": "先週、時計を買いませんでした",
+        "english": "I didn't buy a watch politely last week.",
+      },
+    },
+    "te": {
+      "conjugation": "買って",
+      "sentence": {
+        "japanese": "友達と本を買っています",
+        "english": "I am buying books with friends.",
+      },
+    }
+  },  
+  {
+    "dictionary": "持つ",
+    "negative": {
+      "conjugation": "持たない",
+      "sentence": {
+        "japanese": "財布を持たない",
+        "english": "I don't have a wallet.",
+      },
+    },
+    "polite": {
+      "conjugation": "持ちます",
+      "sentence": {
+        "japanese": "鞄を持ちます",
+        "english": "I have a bag.",
+      },
+    },
+    "polite_negative": {
+      "conjugation": "持ちません",
+      "sentence": {
+        "japanese": "時計を持ちません",
+        "english": "I don't have a watch politely.",
+      },
+    },
+    "past": {
+      "conjugation": "持った",
+      "sentence": {
+        "japanese": "昨日、傘を持った",
+        "english": "I had an umbrella yesterday.",
+      },
+    },
+    "past_negative": {
+      "conjugation": "持たなかった",
+      "sentence": {
+        "japanese": "昨日、カメラを持たなかった",
+        "english": "I didn't have a camera yesterday.",
+      },
+    },
+    "past_polite": {
+      "conjugation": "持ちました",
+      "sentence": {
+        "japanese": "先週、スマートフォンを持ちました",
+        "english": "I had a smartphone last week.",
+      },
+    },
+    "past_polite_negative": {
+      "conjugation": "持ちませんでした",
+      "sentence": {
+        "japanese": "先週、パソコンを持ちませんでした",
+        "english": "I didn't have a computer politely last week.",
+      },
+    },
+    "te": {
+      "conjugation": "持って",
+      "sentence": {
+        "japanese": "友達と本を持っています",
+        "english": "I have books with friends.",
+      },
+    },
+  },
+  {
+    "dictionary": "撮る",
+    "negative": {
+      "conjugation": "撮らない",
+      "sentence": {
+        "japanese": "写真を撮らない",
+        "english": "I don't take photos.",
+      },
+    },
+    "polite": {
+      "conjugation": "撮ります",
+      "sentence": {
+        "japanese": "ビデオを撮ります",
+        "english": "I take videos.",
+      },
+    },
+    "polite_negative": {
+      "conjugation": "撮りません",
+      "sentence": {
+        "japanese": "映画を撮りません",
+        "english": "I don't take movies politely.",
+      },
+    },
+    "past": {
+      "conjugation": "撮った",
+      "sentence": {
+        "japanese": "昨日、写真を撮った",
+        "english": "I took photos yesterday.",
+      },
+    },
+    "past_negative": {
+      "conjugation": "撮らなかった",
+      "sentence": {
+        "japanese": "昨日、ビデオを撮らなかった",
+        "english": "I didn't take videos yesterday.",
+      },
+    },
+    "past_polite": {
+      "conjugation": "撮りました",
+      "sentence": {
+        "japanese": "先週、映画を撮りました",
+        "english": "I took movies last week.",
+      },
+    },
+    "past_polite_negative": {
+      "conjugation": "撮りませんでした",
+      "sentence": {
+        "japanese": "先週、テレビを撮りませんでした",
+        "english": "I didn't take TV politely last week.",
+      },
+    },
+    "te": {
+      "conjugation": "撮って",
+      "sentence": {
+        "japanese": "友達と写真を撮っています",
+        "english": "I am taking photos with friends.",
+      },
+    },
+  },
+  {
+    "dictionary": "ある",
+    "negative": {
+      "conjugation": "ない",
+      "sentence": {
+        "japanese": "犬がない",
+        "english": "I don't have a dog.",
+      },
+    },
+    "polite": {
+      "conjugation": "あります",
+      "sentence": {
+        "japanese": "猫があります",
+        "english": "I have a cat.",
+      },
+    },
+    "polite_negative": {
+      "conjugation": "ありません",
+      "sentence": {
+        "japanese": "鳥がありません",
+        "english": "I don't have a bird politely.",
+      },
+    },
+    "past": {
+      "conjugation": "あった",
+      "sentence": {
+        "japanese": "昨日、花があった",
+        "english": "There was a flower yesterday.",
+      },
+    },
+    "past_negative": {
+      "conjugation": "なかった",
+      "sentence": {
+        "japanese": "昨日、本がなかった",
+        "english": "There wasn't a book yesterday.",
+      },
+    },
+    "past_polite": {
+      "conjugation": "ありました",
+      "sentence": {
+        "japanese": "先週、魚がありました",
+        "english": "There was fish last week.",
+      },
+    },
+    "past_polite_negative": {
+      "conjugation": "ありませんでした",
+      "sentence": {
+        "japanese": "先週、車がありませんでした",
+        "english": "There wasn't a car politely last week.",
+      },
+    },
+    "te": {
+      "conjugation": "あって",
+      "sentence": {
+        "japanese": "友達が本をあっています",
+        "english": "My friends have books.",
+      },
+    },
+  },  
+  {
+    "dictionary": "読む",
+    "negative": {
+      "conjugation": "読まない",
+      "sentence": {
+        "japanese": "新聞を読まない",
+        "english": "I don't read newspapers.",
+      }
+    },
+    "polite": {
+      "conjugation": "読みます",
+      "sentence": {
+        "japanese": "雑誌を読みます",
+        "english": "I read magazines.",
+      }
+    },
+    "polite_negative": {
+      "conjugation": "読みません",
+      "sentence": {
+        "japanese": "小説を読みません",
+        "english": "I don't read novels politely.",
+      }
+    },
+    "past": {
+      "conjugation": "読んだ",
+      "sentence": {
+        "japanese": "昨日、詩を読んだ",
+        "english": "I read poems yesterday.",
+      }
+    },
+    "past_negative": {
+      "conjugation": "読まなかった",
+      "sentence": {
+        "japanese": "昨日、マガジンを読まなかった",
+        "english": "I didn't read magazines yesterday.",
+      }
+    },
+    "past_polite": {
+      "conjugation": "読みました",
+      "sentence": {
+        "japanese": "先週、新聞を読みました",
+        "english": "I read newspapers last week.",
+      }
+    },
+    "past_polite_negative": {
+      "conjugation": "読みませんでした",
+      "sentence": {
+        "japanese": "先週、評論を読みませんでした",
+        "english": "I didn't read critiques politely last week.",
+      }
+    },
+    "te": {
+      "conjugation": "読んで",
+      "sentence": {
+        "japanese": "友達と雑誌を読んでいます",
+        "english": "I am reading magazines with friends.",
+      }
+    }
+  },
+  {
+    "dictionary": "遊ぶ",
+    "negative": {
+      "conjugation": "遊ばない",
+      "sentence": {
+        "japanese": "子供と遊ばない",
+        "english": "I don't play with children.",
+      }
+    },
+    "polite": {
+      "conjugation": "遊びます",
+      "sentence": {
+        "japanese": "友達と遊びます",
+        "english": "I play with friends.",
+      }
+    },
+    "polite_negative": {
+      "conjugation": "遊びません",
+      "sentence": {
+        "japanese": "犬と遊びません",
+        "english": "I don't play with dogs politely.",
+      }
+    },
+    "past": {
+      "conjugation": "遊んだ",
+      "sentence": {
+        "japanese": "昨日、公園で遊んだ",
+        "english": "I played in the park yesterday.",
+      }
+    },
+    "past_negative": {
+      "conjugation": "遊ばなかった",
+      "sentence": {
+        "japanese": "昨日、海で遊ばなかった",
+        "english": "I didn't play at the sea yesterday.",
+      }
+    },
+    "past_polite": {
+      "conjugation": "遊びました",
+      "sentence": {
+        "japanese": "先週、山で遊びました",
+        "english": "I played in the mountains last week.",
+      }
+    },
+    "past_polite_negative": {
+      "conjugation": "遊びませんでした",
+      "sentence": {
+        "japanese": "先週、公園で遊びませんでした",
+        "english": "I didn't play in the park politely last week.",
+      }
+    },
+    "te": {
+      "conjugation": "遊んで",
+      "sentence": {
+        "japanese": "友達とビデオゲームを遊んでいます",
+        "english": "I am playing video games with friends.",
+      }
+    }
+  },
+  {
+    "dictionary": "死ぬ",
+    "negative": {
+      "conjugation": "死なない",
+      "sentence": {
+        "japanese": "猫が死なない",
+        "english": "The cat doesn't die.",
+      }
+    },
+    "polite": {
+      "conjugation": "死にます",
+      "sentence": {
+        "japanese": "彼が死にます",
+        "english": "He dies.",
+      }
+    },
+    "polite_negative": {
+      "conjugation": "死にません",
+      "sentence": {
+        "japanese": "彼女が死にません",
+        "english": "She doesn't die politely.",
+      }
+    },
+    "past": {
+      "conjugation": "死んだ",
+      "sentence": {
+        "japanese": "昨日、鳥が死んだ",
+        "english": "The bird died yesterday.",
+      }
+    },
+    "past_negative": {
+      "conjugation": "死ななかった",
+      "sentence": {
+        "japanese": "昨日、犬が死ななかった",
+        "english": "The dog didn't die yesterday.",
+      }
+    },
+    "past_polite": {
+      "conjugation": "死にました",
+      "sentence": {
+        "japanese": "先週、魚が死にました",
+        "english": "The fish died last week.",
+      }
+    },
+    "past_polite_negative": {
+      "conjugation": "死にませんでした",
+      "sentence": {
+        "japanese": "先週、猫が死にませんでした",
+        "english": "The cat didn't die politely last week.",
+      }
+    },
+    "te": {
+      "conjugation": "死んで",
+      "sentence": {
+        "japanese": "友達と映画を死んでいます",
+        "english": "I am watching a movie with friends.",
+      }
+    }
+  },  
+  {
+    "dictionary": "書く",
+    "negative": {
+      "conjugation": "書かない",
+      "sentence": {
+        "japanese": "手紙を書かない",
+        "english": "I don't write letters.",
+      },
+    },
+    "polite": {
+      "conjugation": "書きます",
+      "sentence": {
+        "japanese": "詩を書きます",
+        "english": "I write poems.",
+      },
+    },
+    "polite_negative": {
+      "conjugation": "書きません",
+      "sentence": {
+        "japanese": "小説を書きません",
+        "english": "I don't write novels politely.",
+      },
+    },
+    "past": {
+      "conjugation": "書いた",
+      "sentence": {
+        "japanese": "昨日、絵を書いた",
+        "english": "I drew pictures yesterday.",
+      },
+    },
+    "past_negative": {
+      "conjugation": "書かなかった",
+      "sentence": {
+        "japanese": "昨日、文章を書かなかった",
+        "english": "I didn't write articles yesterday.",
+      },
+    },
+    "past_polite": {
+      "conjugation": "書きました",
+      "sentence": {
+        "japanese": "先週、レポートを書きました",
+        "english": "I wrote reports last week.",
+      },
+    },
+    "past_polite_negative": {
+      "conjugation": "書きませんでした",
+      "sentence": {
+        "japanese": "先週、日記を書きませんでした",
+        "english": "I didn't write diaries politely last week.",
+      },
+    },
+    "te": {
+      "conjugation": "書いて",
+      "sentence": {
+        "japanese": "友達と手紙を書いています",
+        "english": "I am writing letters with friends.",
+      },
+    },
+  },
+  {
+    "dictionary": "行く",
+    "negative": {
+      "conjugation": "行かない",
+      "sentence": {
+        "japanese": "映画に行かない",
+        "english": "I don't go to movies.",
+      },
+    },
+    "polite": {
+      "conjugation": "行きます",
+      "sentence": {
+        "japanese": "公園に行きます",
+        "english": "I go to the park.",
+      },
+    },
+    "polite_negative": {
+      "conjugation": "行きません",
+      "sentence": {
+        "japanese": "スーパーに行きません",
+        "english": "I don't go to the supermarket politely.",
+      },
+    },
+    "past": {
+      "conjugation": "行った",
+      "sentence": {
+        "japanese": "昨日、山に行った",
+        "english": "I went to the mountains yesterday.",
+      },
+    },
+    "past_negative": {
+      "conjugation": "行かなかった",
+      "sentence": {
+        "japanese": "昨日、海に行かなかった",
+        "english": "I didn't go to the sea yesterday.",
+      },
+    },
+    "past_polite": {
+      "conjugation": "行きました",
+      "sentence": {
+        "japanese": "先週、美術館に行きました",
+        "english": "I went to the museum last week.",
+      },
+    },
+    "past_polite_negative": {
+      "conjugation": "行きませんでした",
+      "sentence": {
+        "japanese": "先週、図書館に行きませんでした",
+        "english": "I didn't go to the library politely last week.",
+      },
+    },
+    "te": {
+      "conjugation": "行って",
+      "sentence": {
+        "japanese": "友達と映画に行っています",
+        "english": "I am going to the movies with friends.",
+      },
+    },
+  },
+  {
+    "dictionary": "急ぐ",
+    "negative": {
+      "conjugation": "急がない",
+      "sentence": {
+        "japanese": "彼は急がない",
+        "english": "He doesn't hurry.",
+      },
+    },
+    "polite": {
+      "conjugation": "急ぎます",
+      "sentence": {
+        "japanese": "彼女は急ぎます",
+        "english": "She hurries.",
+      },
+    },
+    "polite_negative": {
+      "conjugation": "急ぎません",
+      "sentence": {
+        "japanese": "先生は急ぎません",
+        "english": "The teacher doesn't hurry politely.",
+      },
+    },
+    "past": {
+      "conjugation": "急いだ",
+      "sentence": {
+        "japanese": "昨日、私は急いだ",
+        "english": "I hurried yesterday.",
+      },
+    },
+    "past_negative": {
+      "conjugation": "急がなかった",
+      "sentence": {
+        "japanese": "昨日、彼は急がなかった",
+        "english": "He didn't hurry yesterday.",
+      },
+    },
+    "past_polite": {
+      "conjugation": "急ぎました",
+      "sentence": {
+        "japanese": "先週、彼女は急ぎました",
+        "english": "She hurried last week.",
+      },
+    },
+    "past_polite_negative": {
+      "conjugation": "急ぎませんでした",
+      "sentence": {
+        "japanese": "先週、先生は急ぎませんでした",
+        "english": "The teacher didn't hurry politely last week.",
+      },
+    },
+    "te": {
+      "conjugation": "急いで",
+      "sentence": {
+        "japanese": "友達とレストランに急いでいます",
+        "english": "I am hurrying to the restaurant with friends.",
+      },
+    },
+  }  
+];

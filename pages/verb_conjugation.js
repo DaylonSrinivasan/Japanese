@@ -28,10 +28,15 @@ function App() {
     );
     const conjugationToQuiz = conjugations[randomConjugationIndex];
 
+    // Remove the conjugation from the Japanese sentence
+    const japaneseSentenceWithoutConjugation = verb[conjugationToQuiz].sentence.japanese.replace(verb[conjugationToQuiz].conjugation, '____');
+
     return {
       verb: verb.dictionary,
       conjugationToQuiz,
-      correctAnswer: verb[conjugationToQuiz],
+      correctAnswer: verb[conjugationToQuiz].conjugation,
+      japaneseSentence: japaneseSentenceWithoutConjugation.trim(), // Trim any leading/trailing spaces
+      englishSentence: verb[conjugationToQuiz].sentence.english,
     };
   };
 
@@ -69,7 +74,8 @@ function App() {
         <div>
           <h2>Quiz:</h2>
           <p>Verb: {quizData.verb}</p>
-          <p>Conjugation to Quiz: {quizData.conjugationToQuiz}</p>
+          <p>Japanese Sentence: {quizData.japaneseSentence}</p>
+          <p>English Sentence: {quizData.englishSentence}</p>
           <label>Your Answer: </label>
           <input
             type="text"
@@ -103,14 +109,14 @@ function App() {
             <tr key={index}>
               <td>{verb.dictionary}</td>
               <td>{verb.dictionary}</td>
-              <td>{verb.negative}</td>
-              <td>{verb.polite}</td>
-              <td>{verb.polite_negative}</td>
-              <td>{verb.past}</td>
-              <td>{verb.past_negative}</td>
-              <td>{verb.past_polite}</td>
-              <td>{verb.past_polite_negative}</td>
-              <td>{verb.te}</td>
+              <td>{verb.negative.conjugation}</td>
+              <td>{verb.polite.conjugation}</td>
+              <td>{verb.polite_negative.conjugation}</td>
+              <td>{verb.past.conjugation}</td>
+              <td>{verb.past_negative.conjugation}</td>
+              <td>{verb.past_polite.conjugation}</td>
+              <td>{verb.past_polite_negative.conjugation}</td>
+              <td>{verb.te.conjugation}</td>
             </tr>
           ))}
         </tbody>
