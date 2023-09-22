@@ -74,9 +74,13 @@
   }
   
   /* Style alternating rows */
-  .verb-table tr:nth-child(even) {
-    background-color: #f2f2f2;
+
+  /* Style for selected rows */
+  tr.selected-row {
+    background-color: green; /* Change this to your desired highlight color */
+    color: white; /* Text color for selected rows, you can adjust it as needed */
   }
+
   
   /* Style table cells */
   .verb-table td {

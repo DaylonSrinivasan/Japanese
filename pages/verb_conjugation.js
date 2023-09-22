@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { VERB_CONJUGATIONS } from '../data/verb_conjugations.js';
 import '../styles/verb_conjugation.css'; // Import your CSS file
 
-
 function App() {
   const [quizData, setQuizData] = useState(null);
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState('');
   const [enterPressCount, setEnterPressCount] = useState(0);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   useEffect(() => {
     setQuizData(getRandomQuizData());
@@ -17,30 +17,27 @@ function App() {
   }, []);
 
   const getRandomQuizData = () => {
-    // Select a random verb and a random conjugation to quiz the user.
-    const randomVerbIndex = Math.floor(Math.random() * VERB_CONJUGATIONS.length);
-    const verb = VERB_CONJUGATIONS[randomVerbIndex];
-
-    const conjugations = Object.keys(verb).filter(
-      (key) => key !== 'dictionary'
-    );
-
-    const randomConjugationIndex = Math.floor(
-      Math.random() * conjugations.length
-    );
+    const selectedRowsEmpty = selectedRows.length === 0;
+    const sourceArray = selectedRowsEmpty ? VERB_CONJUGATIONS : selectedRows.map((index) => VERB_CONJUGATIONS[index]);
+    
+    const randomVerbIndex = Math.floor(Math.random() * sourceArray.length);
+    const verb = sourceArray[randomVerbIndex];
+    const conjugations = Object.keys(verb).filter((key) => key !== 'dictionary');
+    const randomConjugationIndex = Math.floor(Math.random() * conjugations.length);
     const conjugationToQuiz = conjugations[randomConjugationIndex];
-
-    // Remove the conjugation from the Japanese sentence
+  
     const japaneseSentenceWithoutConjugation = verb[conjugationToQuiz].sentence.japanese.replace(verb[conjugationToQuiz].conjugation, '____');
-
+  
     return {
       verb: verb.dictionary,
       conjugationToQuiz,
       correctAnswer: verb[conjugationToQuiz].conjugation,
-      japaneseSentence: japaneseSentenceWithoutConjugation.trim(), // Trim any leading/trailing spaces
+      japaneseSentence: japaneseSentenceWithoutConjugation.trim(),
       englishSentence: verb[conjugationToQuiz].sentence.english,
     };
   };
+  
+  
 
   const handleKeyUp = (e) => {
     if (e.key === 'Enter') {
@@ -69,12 +66,25 @@ function App() {
     }
   };
   
-
   const startNewQuiz = () => {
     setQuizData(getRandomQuizData());
     setUserAnswer('');
     setFeedback('');
     setEnterPressCount(0);
+  };
+
+  const toggleRowSelection = (index) => {
+    console.log('selecting row ' + index);
+    // Find the index of the clicked row in the selectedRows array
+    const selectedIndex = selectedRows.indexOf(index);
+
+    if (selectedIndex === -1) {
+      // If the row is not already selected, add it to the selectedRows array
+      setSelectedRows([...selectedRows, index]);
+    } else {
+      // If the row is already selected, remove it from the selectedRows array
+      setSelectedRows(selectedRows.filter((rowIndex) => rowIndex !== index));
+    }
   };
 
   return (
@@ -96,12 +106,12 @@ function App() {
             onKeyUp={handleKeyUp}
           />
           <div className="feedback-container">
-  {feedback && (
-    <div className={feedback === 'Correct! Press Enter for a new quiz.' ? 'correct-feedback' : 'incorrect-feedback'}>
-      {feedback}
-    </div>
-  )}
-</div>
+            {feedback && (
+              <div className={feedback === 'Correct! Press Enter for a new quiz.' ? 'correct-feedback' : 'incorrect-feedback'}>
+                {feedback}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -123,7 +133,11 @@ function App() {
         </thead>
         <tbody>
           {VERB_CONJUGATIONS.map((verb, index) => (
-            <tr key={index}>
+            <tr
+              key={index}
+              className={selectedRows.includes(index) ? 'selected-row' : ''}
+              onClick={() => toggleRowSelection(index)}
+            >
               <td>{verb.dictionary}</td>
               <td>{verb.dictionary}</td>
               <td>{verb.negative.conjugation}</td>
