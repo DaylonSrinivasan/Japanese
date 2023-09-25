@@ -10,8 +10,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Required set-up
 
-1. npm i -g vercel@latest
-2. vercel env pull .env
+1. create a .env file with neo4j credentials (see .env.example)
 
 ## To update the database schema
 
