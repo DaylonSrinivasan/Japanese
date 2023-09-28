@@ -128,7 +128,6 @@ function App() {
             <th>Past Polite</th>
             <th>Past Negative</th>
             <th>Past Polite Negative</th>
-            <th>Te-form</th>
           </tr>
         </thead>
         <tbody>
