@@ -30,7 +30,7 @@ function App() {
     const japaneseSentenceWithoutConjugation = adjective[conjugationToQuiz].sentence.japanese.replace(adjective[conjugationToQuiz].conjugation, '____');
   
     return {
-      adjective: adjective.adjective.conjugation,
+      adjective: adjective.dictionary.conjugation,
       conjugationToQuiz,
       correctAnswer: adjective[conjugationToQuiz].conjugation,
       japaneseSentence: japaneseSentenceWithoutConjugation.trim(),
@@ -120,7 +120,7 @@ function App() {
       <table className="conjugation-table">
         <thead>
           <tr>
-            <th>Adjective</th>
+            <th>Dictionary</th>
             <th>Polite</th>
             <th>Negative</th>
             <th>Polite Negative</th>
@@ -128,6 +128,7 @@ function App() {
             <th>Past Polite</th>
             <th>Past Negative</th>
             <th>Past Polite Negative</th>
+            <th>Te form</th>
           </tr>
         </thead>
         <tbody>
@@ -137,7 +138,7 @@ function App() {
               className={selectedRows.includes(index) ? 'selected-row' : ''}
               onClick={() => toggleRowSelection(index)}
             >
-              <td>{adjective.adjective.conjugation}</td>
+              <td>{adjective.dictionary.conjugation}</td>
               <td>{adjective.polite.conjugation}</td>
               <td>{adjective.negative.conjugation}</td>
               <td>{adjective.polite_negative.conjugation}</td>
@@ -145,6 +146,7 @@ function App() {
               <td>{adjective.past_polite.conjugation}</td>
               <td>{adjective.past_negative.conjugation}</td>
               <td>{adjective.past_polite_negative.conjugation}</td>
+              <td>{adjective.te_form.conjugation}</td>
             </tr>
           ))}
         </tbody>
