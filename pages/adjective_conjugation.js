@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { VERB_CONJUGATIONS } from '../data/verb_conjugations.js';
+import { ADJECTIVE_CONJUGATIONS } from '../data/adjective_conjugations.js';
 import '../styles/conjugation_quiz.css'; // Import your CSS file
 
 function App() {
@@ -18,22 +18,23 @@ function App() {
 
   const getRandomQuizData = () => {
     const selectedRowsEmpty = selectedRows.length === 0;
-    const sourceArray = selectedRowsEmpty ? VERB_CONJUGATIONS : selectedRows.map((index) => VERB_CONJUGATIONS[index]);
+    const sourceArray = selectedRowsEmpty ? ADJECTIVE_CONJUGATIONS : selectedRows.map((index) => ADJECTIVE_CONJUGATIONS[index]);
     
-    const randomVerbIndex = Math.floor(Math.random() * sourceArray.length);
-    const verb = sourceArray[randomVerbIndex];
-    const conjugations = Object.keys(verb).filter((key) => key !== 'dictionary');
+    const randomAdjectiveIndex = Math.floor(Math.random() * sourceArray.length);
+    const adjective = sourceArray[randomAdjectiveIndex];
+    const conjugations = Object.keys(adjective); // Access the properties correctly
     const randomConjugationIndex = Math.floor(Math.random() * conjugations.length);
     const conjugationToQuiz = conjugations[randomConjugationIndex];
+    console.log('daylon debug ' + conjugationToQuiz);
   
-    const japaneseSentenceWithoutConjugation = verb[conjugationToQuiz].sentence.japanese.replace(verb[conjugationToQuiz].conjugation, '____');
+    const japaneseSentenceWithoutConjugation = adjective[conjugationToQuiz].sentence.japanese.replace(adjective[conjugationToQuiz].conjugation, '____');
   
     return {
-      verb: verb.dictionary,
+      adjective: adjective.adjective.conjugation,
       conjugationToQuiz,
-      correctAnswer: verb[conjugationToQuiz].conjugation,
+      correctAnswer: adjective[conjugationToQuiz].conjugation,
       japaneseSentence: japaneseSentenceWithoutConjugation.trim(),
-      englishSentence: verb[conjugationToQuiz].sentence.english,
+      englishSentence: adjective[conjugationToQuiz].sentence.english,
     };
   };
   
@@ -89,12 +90,12 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1 className="app-title">Verb Conjugation Quiz</h1>
+      <h1 className="app-title">Adjective Conjugation Quiz</h1>
 
       {quizData && (
         <div className="quiz-container">
           <h2>Quiz</h2>
-          <p><strong>Verb:</strong> {quizData.verb}</p>
+          <p><strong>Adjective:</strong> {quizData.adjective}</p>
           <p><strong>Conjugation:</strong> {quizData.conjugationToQuiz}</p>
           <p><strong>Example:</strong> {quizData.englishSentence}</p>
           <p><strong>Translation:</strong> {quizData.japaneseSentence}</p>
@@ -115,39 +116,36 @@ function App() {
         </div>
       )}
 
-      <h2 className="table-title">Verb Conjugations Table</h2>
+      <h2 className="table-title">Adjective Conjugations Table</h2>
       <table className="conjugation-table">
         <thead>
           <tr>
-            <th>Verb</th>
-            <th>Dictionary</th>
-            <th>Negative</th>
+            <th>Adjective</th>
             <th>Polite</th>
+            <th>Negative</th>
             <th>Polite Negative</th>
             <th>Past</th>
-            <th>Past Negative</th>
             <th>Past Polite</th>
+            <th>Past Negative</th>
             <th>Past Polite Negative</th>
             <th>Te-form</th>
           </tr>
         </thead>
         <tbody>
-          {VERB_CONJUGATIONS.map((verb, index) => (
+          {ADJECTIVE_CONJUGATIONS.map((adjective, index) => (
             <tr
               key={index}
               className={selectedRows.includes(index) ? 'selected-row' : ''}
               onClick={() => toggleRowSelection(index)}
             >
-              <td>{verb.dictionary}</td>
-              <td>{verb.dictionary}</td>
-              <td>{verb.negative.conjugation}</td>
-              <td>{verb.polite.conjugation}</td>
-              <td>{verb.polite_negative.conjugation}</td>
-              <td>{verb.past.conjugation}</td>
-              <td>{verb.past_negative.conjugation}</td>
-              <td>{verb.past_polite.conjugation}</td>
-              <td>{verb.past_polite_negative.conjugation}</td>
-              <td>{verb.te.conjugation}</td>
+              <td>{adjective.adjective.conjugation}</td>
+              <td>{adjective.polite.conjugation}</td>
+              <td>{adjective.negative.conjugation}</td>
+              <td>{adjective.polite_negative.conjugation}</td>
+              <td>{adjective.past.conjugation}</td>
+              <td>{adjective.past_polite.conjugation}</td>
+              <td>{adjective.past_negative.conjugation}</td>
+              <td>{adjective.past_polite_negative.conjugation}</td>
             </tr>
           ))}
         </tbody>

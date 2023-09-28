@@ -1,5 +1,3 @@
-/* verb_conjugation.css */
-
 /* Center the entire app content vertically and horizontally */
 .app-container {
     display: flex;
@@ -33,8 +31,6 @@
     margin-top: 20px;
   }
 
-/* CSS styles to add to verb_conjugation.css */
-/* Add these styles to verb_conjugation.css */
 .feedback-container {
     height: 50px; /* Set the desired fixed height for the feedback container */
     display: flex;
@@ -53,22 +49,22 @@
   
   
   /* Style the table */
-  .verb-table {
+  .conjugation-table {
     width: 80%; /* Adjust this to control the table width */
     border-collapse: collapse;
     text-align: left;
   }
   
   /* Style table header */
-  .verb-table th {
+  .conjugation-table th {
     background-color: #333;
     color: #fff;
     padding: 10px;
   }
   
   /* Style table rows */
-  .verb-table td,
-  .verb-table th {
+  .conjugation-table td,
+  .conjugation-table th {
     padding: 10px;
     border: 1px solid #ddd;
   }
@@ -83,7 +79,7 @@
 
   
   /* Style table cells */
-  .verb-table td {
+  .conjugation-table td {
     font-size: 14px;
   }
   
