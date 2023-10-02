@@ -1,58 +1,76 @@
 import React, { useState, useEffect } from 'react';
+import SRS from '../lib/srs.ts'; // Import the SRS module (adjust the path as needed)
 import { ADJECTIVE_CONJUGATIONS } from '../data/adjective_conjugations.js';
 import '../styles/conjugation_quiz.css'; // Import your CSS file
+
+class SRSElement {
+  constructor(index, conjugation) {
+      this.index = index;
+      this.conjugation = conjugation;
+  }
+
+  toString() {
+    return `SRSElement { index: ${this.index}, conjugation: ${this.conjugation}}`;
+  }
+}
 
 function App() {
   const [quizData, setQuizData] = useState(null);
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState('');
   const [enterPressCount, setEnterPressCount] = useState(0);
+  const [srs, setSRS] = useState(null); // Initialize the SRS module
   const [selectedRows, setSelectedRows] = useState([]);
 
   useEffect(() => {
-    setQuizData(getRandomQuizData());
-    setUserAnswer('');
-    setFeedback('');
-    setEnterPressCount(0);
-  }, []);
-
-  const getRandomQuizData = () => {
-    const selectedRowsEmpty = selectedRows.length === 0;
-    const sourceArray = selectedRowsEmpty ? ADJECTIVE_CONJUGATIONS : selectedRows.map((index) => ADJECTIVE_CONJUGATIONS[index]);
+    const rowsToUse = selectedRows.length === 0 ? Array.from({ length: ADJECTIVE_CONJUGATIONS.length }, (_, i) => i) : selectedRows;
+    const initialSRSData = [];
     
-    const randomAdjectiveIndex = Math.floor(Math.random() * sourceArray.length);
-    const adjective = sourceArray[randomAdjectiveIndex];
-    const conjugations = Object.keys(adjective); // Access the properties correctly
-    const randomConjugationIndex = Math.floor(Math.random() * conjugations.length);
-    const conjugationToQuiz = conjugations[randomConjugationIndex];
-    console.log('daylon debug ' + conjugationToQuiz);
-  
-    const japaneseSentenceWithoutConjugation = adjective[conjugationToQuiz].sentence.japanese.replace(adjective[conjugationToQuiz].conjugation, '____');
+    for (const row of rowsToUse) {
+      for (const conjugation of Object.keys(ADJECTIVE_CONJUGATIONS[row])) {
+        initialSRSData.push(new SRSElement(row, conjugation));
+      }
+    }
+    setSRS(new SRS(initialSRSData));
+  }, [selectedRows]);
+
+
+  useEffect(() => {
+    if (srs !== null) {
+      startNewQuiz();
+    }
+  }, [srs]);
+
+  const getQuizData = (quizElement) => {
+    const adjective = ADJECTIVE_CONJUGATIONS[quizElement.index];
+    const conjugationToQuiz = adjective[quizElement.conjugation];
+    const japaneseSentenceWithoutConjugation = conjugationToQuiz.sentence.japanese.replace(conjugationToQuiz.conjugation, '____');
   
     return {
       adjective: adjective.dictionary.conjugation,
-      conjugationToQuiz,
-      correctAnswer: adjective[conjugationToQuiz].conjugation,
+      element: quizElement,
+      conjugationToQuiz: quizElement.conjugation,
+      correctAnswer: conjugationToQuiz.conjugation,
       japaneseSentence: japaneseSentenceWithoutConjugation.trim(),
-      englishSentence: adjective[conjugationToQuiz].sentence.english,
+      englishSentence: conjugationToQuiz.sentence.english,
     };
   };
-  
-  
+
 
   const handleKeyUp = (e) => {
+    if (!quizData) {
+      return;
+    }
     if (e.key === 'Enter') {
       setEnterPressCount(enterPressCount + 1);
   
       if (enterPressCount % 2 === 0) {
-        // Even number of Enter presses, check if the answer is correct
         const isCorrect = userAnswer === quizData.correctAnswer;
-  
         if (isCorrect) {
-          setFeedback(
-            <p className="correct-feedback">Correct! Press Enter for a new quiz.</p>
-          );
+          // Correct answer
+          setFeedback(<p className="correct-feedback">Correct! Press Enter for a new quiz.</p>);
         } else {
+          // Incorrect answer
           setFeedback(
             <p className="incorrect-feedback">
               Incorrect. The correct answer is:
@@ -60,32 +78,31 @@ function App() {
             </p>
           );
         }
+        srs.processFeedback(quizData.element, isCorrect);
       } else {
-        // Odd number of Enter presses, start a new quiz
         startNewQuiz();
       }
     }
   };
-  
+
   const startNewQuiz = () => {
-    setQuizData(getRandomQuizData());
+    setQuizData(getQuizData(srs.getNextElement()));
     setUserAnswer('');
     setFeedback('');
     setEnterPressCount(0);
   };
 
   const toggleRowSelection = (index) => {
-    console.log('selecting row ' + index);
-    // Find the index of the clicked row in the selectedRows array
     const selectedIndex = selectedRows.indexOf(index);
+    const updatedSelectedRows = [...selectedRows];
 
     if (selectedIndex === -1) {
-      // If the row is not already selected, add it to the selectedRows array
-      setSelectedRows([...selectedRows, index]);
+      updatedSelectedRows.push(index);
     } else {
-      // If the row is already selected, remove it from the selectedRows array
-      setSelectedRows(selectedRows.filter((rowIndex) => rowIndex !== index));
+      updatedSelectedRows.splice(selectedIndex, 1);
     }
+
+    setSelectedRows(updatedSelectedRows);
   };
 
   return (
@@ -107,11 +124,7 @@ function App() {
             onKeyUp={handleKeyUp}
           />
           <div className="feedback-container">
-            {feedback && (
-              <div className={feedback === 'Correct! Press Enter for a new quiz.' ? 'correct-feedback' : 'incorrect-feedback'}>
-                {feedback}
-              </div>
-            )}
+            {feedback}
           </div>
         </div>
       )}
@@ -138,15 +151,9 @@ function App() {
               className={selectedRows.includes(index) ? 'selected-row' : ''}
               onClick={() => toggleRowSelection(index)}
             >
-              <td>{adjective.dictionary.conjugation}</td>
-              <td>{adjective.polite.conjugation}</td>
-              <td>{adjective.negative.conjugation}</td>
-              <td>{adjective.polite_negative.conjugation}</td>
-              <td>{adjective.past.conjugation}</td>
-              <td>{adjective.past_polite.conjugation}</td>
-              <td>{adjective.past_negative.conjugation}</td>
-              <td>{adjective.past_polite_negative.conjugation}</td>
-              <td>{adjective.te_form.conjugation}</td>
+              {Object.keys(adjective).map((conjugation) => (
+                <td key={conjugation}>{adjective[conjugation].conjugation}</td>
+              ))}
             </tr>
           ))}
         </tbody>
