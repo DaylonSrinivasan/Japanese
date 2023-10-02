@@ -12,11 +12,6 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 1. create a .env file with neo4j credentials (see .env.example)
 
-## To update the database schema
-
-1. Modify prisma/schema.prisma
-2. `npx prisma db push` or `npx prisma generate`
-
 
 ## Running locally
 
