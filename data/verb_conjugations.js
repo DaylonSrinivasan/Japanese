@@ -824,5 +824,182 @@ export const VERB_CONJUGATIONS = [
         "english": "I am hurrying to the restaurant with friends.",
       },
     },
-  }  
+  },
+  {
+    "dictionary": "返す",
+    "negative": {
+      "conjugation": "返さない",
+      "sentence": {
+        "japanese": "財布を返さない",
+        "english": "I don't return the wallet."
+      }
+    },
+    "polite": {
+      "conjugation": "返します",
+      "sentence": {
+        "japanese": "本を返します",
+        "english": "I return the book."
+      }
+    },
+    "polite_negative": {
+      "conjugation": "返しません",
+      "sentence": {
+        "japanese": "手紙を返しません",
+        "english": "I don't return the letter."
+      }
+    },
+    "past": {
+      "conjugation": "返した",
+      "sentence": {
+        "japanese": "昨日、傘を返した",
+        "english": "I returned the umbrella yesterday."
+      }
+    },
+    "past_negative": {
+      "conjugation": "返さなかった",
+      "sentence": {
+        "japanese": "先週、携帯を返さなかった",
+        "english": "I didn't return the phone last week."
+      }
+    },
+    "past_polite": {
+      "conjugation": "返しました",
+      "sentence": {
+        "japanese": "一ヶ月前、CDを返しました",
+        "english": "I returned the CD a month ago."
+      }
+    },
+    "past_polite_negative": {
+      "conjugation": "返しませんでした",
+      "sentence": {
+        "japanese": "昨年、鍵を返しませんでした",
+        "english": "I didn't return the key last year."
+      }
+    },
+    "te": {
+      "conjugation": "返して",
+      "sentence": {
+        "japanese": "友達と買い物を返しています",
+        "english": "I am returning shopping with friends."
+      }
+    }
+  },
+  {
+    "dictionary": "知る",
+    "negative": {
+      "conjugation": "知らない",
+      "sentence": {
+        "japanese": "その人を知らない",
+        "english": "I don't know that person."
+      }
+    },
+    "polite": {
+      "conjugation": "知ります",
+      "sentence": {
+        "japanese": "新しい情報を知ります",
+        "english": "I learn new information."
+      }
+    },
+    "polite_negative": {
+      "conjugation": "知りません",
+      "sentence": {
+        "japanese": "その事実を知りません",
+        "english": "I don't know that fact."
+      }
+    },
+    "past": {
+      "conjugation": "知った",
+      "sentence": {
+        "japanese": "昨日、答えを知った",
+        "english": "I knew the answer yesterday."
+      }
+    },
+    "past_negative": {
+      "conjugation": "知らなかった",
+      "sentence": {
+        "japanese": "先週、その出来事を知らなかった",
+        "english": "I didn't know about that event last week."
+      }
+    },
+    "past_polite": {
+      "conjugation": "知りました",
+      "sentence": {
+        "japanese": "一週間前、新事実を知りました",
+        "english": "I learned a new fact a week ago."
+      }
+    },
+    "past_polite_negative": {
+      "conjugation": "知りませんでした",
+      "sentence": {
+        "japanese": "去年、その計画を知りませんでした",
+        "english": "I didn't know about that plan last year."
+      }
+    },
+    "te": {
+      "conjugation": "知って",
+      "sentence": {
+        "japanese": "友達と問題を知っています",
+        "english": "I am aware of the issue with friends."
+      }
+    }
+  },
+  {
+    "dictionary": "ある",
+    "negative": {
+      "conjugation": "ない",
+      "sentence": {
+        "japanese": "猫がいない",
+        "english": "There is no cat."
+      }
+    },
+    "polite": {
+      "conjugation": "あります",
+      "sentence": {
+        "japanese": "花瓶があります",
+        "english": "There is a vase."
+      }
+    },
+    "polite_negative": {
+      "conjugation": "ありません",
+      "sentence": {
+        "japanese": "椅子がありません",
+        "english": "There are no chairs."
+      }
+    },
+    "past": {
+      "conjugation": "あった",
+      "sentence": {
+        "japanese": "昨日、本があった",
+        "english": "There was a book yesterday."
+      }
+    },
+    "past_negative": {
+      "conjugation": "なかった",
+      "sentence": {
+        "japanese": "先週、鍵がなかった",
+        "english": "There was no key last week."
+      }
+    },
+    "past_polite": {
+      "conjugation": "ありました",
+      "sentence": {
+        "japanese": "一ヶ月前、テレビがありました",
+        "english": "There was a TV a month ago."
+      }
+    },
+    "past_polite_negative": {
+      "conjugation": "ありませんでした",
+      "sentence": {
+        "japanese": "去年、携帯がありませんでした",
+        "english": "There was no cell phone last year."
+      }
+    },
+    "te": {
+      "conjugation": "あって",
+      "sentence": {
+        "japanese": "友達と話をあっています",
+        "english": "I am having a conversation with friends."
+      }
+    }
+  }
 ];
