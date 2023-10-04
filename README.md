@@ -28,3 +28,8 @@ bun run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## GraphQL
+
+Query playground can be found at [http://localhost:3000/api/graphql](http://localhost:3000).
+
