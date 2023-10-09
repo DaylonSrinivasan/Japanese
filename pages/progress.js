@@ -30,7 +30,7 @@ function UserProfilePage() {
         <p>Error: {error.message}</p>
       ) : data ? (
         <div>
-          <h1>Daylon's Vocabulary Progress</h1>
+          <h1>Daylons Vocabulary Progress</h1>
           <table>
             <thead>
               <tr>
