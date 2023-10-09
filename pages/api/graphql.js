@@ -8,7 +8,7 @@ const { NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD } = process.env;
 const typeDefs = /* GraphQL */ `
   type User {
     name: String!
-    vocabulary: [Vocabulary!]! @relationship(type: "STUDIES", direction: OUT)
+    vocabulary: [Vocabulary!]! @relationship(type: "STUDIES", direction: OUT, properties: "StudiesProperties")
   }
 
   type Vocabulary {
@@ -16,7 +16,44 @@ const typeDefs = /* GraphQL */ `
     hiragana: String!
     english: String!
   }
+
+  interface StudiesProperties @relationshipProperties {
+    level: Int!
+    lastSeen: DateTime!
+}
 `;
+
+// Sample queries:
+
+// query FetchDaylonsProgress {
+//   users(where: {name: "daylon"}) {
+//     vocabularyConnection {
+//       edges {
+//         level
+//         lastSeen
+//         node {
+//           english
+//           hiragana
+//           japanese
+//         }
+//       }
+//     }
+//   }
+// }
+
+// mutation UpdateDaylonsProgress {
+//   updateUsers(
+//     where: {name: "daylon"}
+//     update: {vocabulary: [
+//       {update: {edge: {level: 3}}, where: {node: {english: "hello"}}},
+//       {update: {edge: {level: 3}}, where: {node: {english: "I am studying"}}}
+//     ]}
+//   ) {
+//     users {
+//       name
+//     }
+//   }
+// }
 
 // Create a Neo4j driver instance to connect to Neo4j AuraDB
 const driver = neo4j.driver(
