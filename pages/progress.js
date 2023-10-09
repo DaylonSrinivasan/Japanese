@@ -4,7 +4,7 @@ import { fetchUserProgress } from '../lib/graphql_client';
 function UserProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [vocabularies, setVocabularies] = useState([]);
 
   useEffect(() => {
     const userName = 'daylon'; // Replace with the user name you want to fetch
@@ -12,7 +12,7 @@ function UserProfilePage() {
     fetchUserProgress(userName)
       .then((result) => {
         if (result) {
-          setData(result);
+          setVocabularies(result);
         }
         setLoading(false);
       })
@@ -28,7 +28,7 @@ function UserProfilePage() {
         <p>Loading...</p>
       ) : error ? (
         <p>Error: {error.message}</p>
-      ) : data ? (
+      ) : vocabularies.length > 0 ? (
         <div>
           <h1>Daylons Vocabulary Progress</h1>
           <table>
@@ -42,13 +42,13 @@ function UserProfilePage() {
               </tr>
             </thead>
             <tbody>
-              {data.users[0]?.vocabularyConnection.edges.map((edge, index) => (
+              {vocabularies.map((vocabulary, index) => (
                 <tr key={index}>
-                  <td>{edge.node.english}</td>
-                  <td>{edge.node.japanese}</td>
-                  <td>{edge.node.hiragana}</td>
-                  <td>{edge.level}</td>
-                  <td>{edge.lastSeen}</td>
+                  <td>{vocabulary.english}</td>
+                  <td>{vocabulary.japanese}</td>
+                  <td>{vocabulary.hiragana}</td>
+                  <td>{vocabulary.level}</td>
+                  <td>{vocabulary.lastSeen}</td>
                 </tr>
               ))}
             </tbody>
