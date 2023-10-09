@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { fetchUserProgress } from '../lib/graphql_client';
+import { fetchUserProgress, updateUserProgress } from '../lib/graphql_client';
+import Vocabulary from '../resources/vocabulary';
 
 function UserProfilePage() {
   const [loading, setLoading] = useState(true);
@@ -16,11 +17,34 @@ function UserProfilePage() {
         }
         setLoading(false);
       })
-      .catch((error) => {
-        setError(error);
+      .catch((err) => {
+        setError(err);
         setLoading(false);
       });
   }, []);
+
+  const resetVocabularies = async () => {
+    const currentTime = new Date().toISOString();
+
+    // Create an array of Vocabulary objects with reset values
+    const resetVocabularies = vocabularies.map((vocabulary) => new Vocabulary(
+      vocabulary.japanese,
+      vocabulary.hiragana,
+      vocabulary.english,
+      0, // Reset level to 0
+      currentTime, // Set lastSeen to the current time
+    ));
+
+    try {
+      // Use the updateUserProgress method to save the reset values in the database
+      await updateUserProgress('daylon', resetVocabularies);
+
+      // Update the state with the reset values
+      setVocabularies(resetVocabularies);
+    } catch (err) {
+      setError(err);
+    }
+  };
 
   return (
     <div>
@@ -53,6 +77,7 @@ function UserProfilePage() {
               ))}
             </tbody>
           </table>
+          <button onClick={resetVocabularies}>Reset</button>
         </div>
       ) : (
         <p>No data available.</p>

@@ -71,3 +71,38 @@ export async function fetchUserProgress(userName: string): Promise<Vocabulary[]>
     throw error;
   }
 }
+
+export async function updateUserProgress(userName: string, vocabularies: Vocabulary[]): Promise<JSON> {
+  console.log('Called updateUserProgress with userName ' + userName);
+  try {
+    const vocabUpdates = vocabularies.map((vocabulary) => {
+      return {
+        update: {
+          edge: {
+            level: vocabulary.level,
+            lastSeen: vocabulary.lastSeen,
+          },
+        },
+        where: {
+          node: {
+            japanese: vocabulary.japanese,
+          },
+        },
+      };
+    });
+
+    const { data } = await client.mutate({
+      mutation: UPDATE_USER_PROGRESS,
+      variables: {
+        userName,
+        vocabularies: vocabUpdates,
+      },
+    });
+
+    console.log('Returning data ' + data);
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+}
