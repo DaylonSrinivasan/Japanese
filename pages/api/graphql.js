@@ -25,21 +25,6 @@ const typeDefs = /* GraphQL */ `
 
 // Sample queries:
 
-// query FetchDaylonsProgress {
-//   users(where: {name: "daylon"}) {
-//     vocabularyConnection {
-//       edges {
-//         level
-//         lastSeen
-//         node {
-//           english
-//           hiragana
-//           japanese
-//         }
-//       }
-//     }
-//   }
-// }
 
 // mutation UpdateDaylonsProgress {
 //   updateUsers(
