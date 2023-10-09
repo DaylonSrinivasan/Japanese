@@ -73,7 +73,7 @@ export async function fetchUserProgress(userName: string): Promise<Vocabulary[]>
 }
 
 export async function updateUserProgress(userName: string, vocabularies: Vocabulary[]): Promise<JSON> {
-  console.log('Called updateUserProgress with userName ' + userName);
+  console.log('Called updateUserProgress with userName ' + userName + ' vocabularies ' + vocabularies);
   try {
     const vocabUpdates = vocabularies.map((vocabulary) => {
       return {
