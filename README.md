@@ -12,6 +12,21 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 1. create a .env file with neo4j credentials (see .env.example)
 
+## Loading data into database from CSV
+
+This is used to populate our study data (such as Japanese vocab).
+
+1. Push CSV to github
+2. On the aura DB console, run something such as:
+
+```
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/DaylonSrinivasan/Japanese/main/data/vocabulary.csv/{token}' AS row
+MERGE (v:Vocabulary {japanese: row.japanese})
+ON CREATE SET v.hiragana = row.hiragana, v.english = row.english;
+```
+
+1. create a .env file with neo4j credentials (see .env.example)
+
 
 ## Running locally
 

@@ -6,7 +6,6 @@ import {
   } from "@apollo/client";
 
 import Vocabulary from '../resources/vocabulary'
-import { type } from "os";
   
 const client = new ApolloClient({
     link: new HttpLink({ uri: '/api/graphql' }),

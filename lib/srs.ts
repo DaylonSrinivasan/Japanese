@@ -30,12 +30,19 @@ export class SRS {
     }
 
     private levelDelays = [
-        0,  // level 0: 0 second delay, not started.
-        15 * 1000, // level 1: 15 second delay
-        1 * 60 * 1000, // level 2: 1 minute second delay
-        5 * 60 * 1000, // level 3: 5 minute delay
-        60 * 60 * 1000 // level 4: 60 minute delay
+        0,               // level 0: 0 second delay, not started.
+        15 * 1000,       // level 1: 15 second delay
+        1 * 60 * 1000,   // level 2: 1 minute delay
+        5 * 60 * 1000,   // level 3: 5 minute delay
+        60 * 60 * 1000,  // level 4: 60 minute delay
+        3 * 60 * 60 * 1000,  // level 5: 3 hour delay
+        8 * 60 * 60 * 1000,  // level 6: 8 hour delay
+        24 * 60 * 60 * 1000, // level 7: 24 hour delay
+        3 * 24 * 60 * 60 * 1000, // level 8: 3 day delay
+        7 * 24 * 60 * 60 * 1000, // level 9: 7 day delay
+        21 * 24 * 60 * 60 * 1000  // level 10: 21 day delay
     ];
+    
 
     getNext(): SRSItem {
         const now = new Date();
