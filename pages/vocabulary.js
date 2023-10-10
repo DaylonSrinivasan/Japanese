@@ -13,10 +13,6 @@ function VocabularyQuiz() {
   const [srs, setSRS] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [enterPressCount, setEnterPressCount] = useState(0);
-  const [questionCounter, setQuestionCounter] = useState(0); // Counter for questions answered.
-
-  // Define showHint outside the if (currentVocabulary) block.
-  const [showHint, setShowHint] = useState(false);
 
   useEffect(() => {
     async function loadVocabularies() {
@@ -71,13 +67,7 @@ function VocabularyQuiz() {
 
       srs.processFeedback(currentVocabulary, success);
       setUserInput('');
-
-      // Increment the question counter and check if it's 5.
-      setQuestionCounter((count) => count + 1);
-      if (questionCounter >= 5) {
-        handleSaveProgress(); // Call updateUserProgress every 5 questions.
-        setQuestionCounter(0); // Reset the counter.
-      }
+      handleSaveProgress();
     }
   };
 
@@ -85,12 +75,8 @@ function VocabularyQuiz() {
     setFeedback('');
     setCorrectAnswer('');
     setCurrentVocabulary(srs.getNext());
-    setShowHint(false); // Hide the hint when moving to the next question.
   };
 
-  const showHintClick = () => {
-    setShowHint(true); // Display the hint (hiragana) when the hint button is clicked.
-  };
 
   const handleSaveProgress = async () => {
     try {
@@ -119,21 +105,10 @@ function VocabularyQuiz() {
             onKeyPress={handleEnterKey}
             className="vocabulary-input"
           />
-          <div className="button-container">
-            <button onClick={showHintClick} className="vocabulary-button">
-              Hint
-            </button>
-          </div>
           <p className="vocabulary-feedback">{feedback}</p>
 
           {feedback === 'Incorrect!' && (
             <p className="correct-answer">{correctAnswer}</p>
-          )}
-
-          {showHint && (
-            <p className="vocabulary-hint">
-              Hiragana Hint: {currentVocabulary.hiragana}
-            </p>
           )}
         </div>
       )}
