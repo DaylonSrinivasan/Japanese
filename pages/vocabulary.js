@@ -95,7 +95,6 @@ function VocabularyQuiz() {
   const handleSaveProgress = async () => {
     try {
       await updateUserProgress(USERNAME, srs.items);
-      setFeedback('Progress saved!');
     } catch (error) {
       console.error('Error saving progress', error);
       setFeedback('Error saving progress');
