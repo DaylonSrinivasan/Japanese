@@ -130,7 +130,6 @@ function VocabularyQuiz() {
           )}
           <p>Level: {currentVocabulary.level}</p>
           <p>Last Seen: {currentVocabulary.lastSeen.toLocaleString()}</p>
-          <p>Number of Correct Answers: {numCorrectAnswers}</p> {/* Display the number of correct answers */}
           <input
             type="text"
             value={hiraganaInput}
