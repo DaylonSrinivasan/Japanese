@@ -42,17 +42,10 @@ function VocabularyQuiz() {
 
   const checkAnswer = () => {
     if (currentVocabulary) {
-      if (userInput.toLowerCase() === currentVocabulary.english.toLowerCase()) {
-        setFeedback('Correct!');
-        // Increment the level
-        currentVocabulary.level++;
-      } else {
-        setFeedback('Incorrect!');
-        // Decrement the level, but not below 0
-        currentVocabulary.level = Math.max(0, currentVocabulary.level - 1);
-      }
-      currentVocabulary.lastSeen = new Date();
-
+      const success = (userInput.toLowerCase() === currentVocabulary.english.toLowerCase());
+      const feedback = success ? 'Correct!' : 'Incorrect!';
+      setFeedback(feedback);
+      srs.processFeedback(currentVocabulary, success);
       setUserInput('');
       setCurrentVocabulary(srs.getNext());
     }

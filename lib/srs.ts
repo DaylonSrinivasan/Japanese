@@ -60,8 +60,6 @@ export class SRS {
 
     processFeedback(item: SRSItem, success: boolean): void {
         if (!this._items.includes(item)) {
-            console.log('looking for item ' + item);
-            console.log('my list is ' + this._items);
             throw new Error("Item not found in the SRS list.");
         }
         item.level = Math.max(item.level, 1); // This item has been seen, so it will be at least level 1.
