@@ -10,12 +10,23 @@ export abstract class SRSItem {
 }
 
 export class SRS {
-
-    constructor(public items: SRSItem[]) {
+    private _items: SRSItem[];
+    constructor(items: SRSItem[]) {
         if (items.length === 0) {
             throw new Error('Elements cannot be an empty list.');
         }
-        this.items = items;
+        this._items = items;
+    }
+
+    get items(): SRSItem[] {
+        return this._items;
+    }
+
+    set items(newItems: SRSItem[]) {
+        if (newItems.length === 0) {
+            throw new Error('Elements cannot be an empty list.');
+        }
+        this._items = newItems;
     }
 
     private levelDelays = [
@@ -28,12 +39,12 @@ export class SRS {
 
     getNext(): SRSItem {
         const now = new Date();
-        const eligibleItems = this.items.filter(item => now.getTime() >= item.lastSeen.getTime() + this.levelDelays[item.level]);
+        const eligibleItems = this._items.filter(item => now.getTime() >= item.lastSeen.getTime() + this.levelDelays[item.level]);
         console.log('Eligible items length ' + eligibleItems.length);
         // No elements need testing, get a random one.
         if (eligibleItems.length === 0) {
-            const randomNumber = Math.floor(Math.random() * this.items.length);
-            return this.items[randomNumber];
+            const randomNumber = Math.floor(Math.random() * this._items.length);
+            return this._items[randomNumber];
         }
         eligibleItems.sort((a, b) => {
             // Sort by highest level first
@@ -48,7 +59,9 @@ export class SRS {
     }
 
     processFeedback(item: SRSItem, success: boolean): void {
-        if (!this.items.includes(item)) {
+        if (!this._items.includes(item)) {
+            console.log('looking for item ' + item);
+            console.log('my list is ' + this._items);
             throw new Error("Item not found in the SRS list.");
         }
         item.level = Math.max(item.level, 1); // This item has been seen, so it will be at least level 1.

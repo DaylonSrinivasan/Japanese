@@ -20,7 +20,7 @@ function App() {
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState('');
   const [enterPressCount, setEnterPressCount] = useState(0);
-  const [srs, setSRS] = useState(null); // Initialize the SRS module
+  const [srs, setSRS] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
 
   useEffect(() => {
@@ -32,9 +32,13 @@ function App() {
         initialSRSData.push(new SRSElement(row, conjugation));
       }
     }
-    setSRS(new SRS(initialSRSData));
+    if (srs === null) {
+      setSRS(new SRS(initialSRSData));
+    } else {
+      srs.items = initialSRSData; // Use the setter to update SRS items
+      startNewQuiz();
+    }
   }, [selectedRows]);
-
 
   useEffect(() => {
     if (srs !== null) {

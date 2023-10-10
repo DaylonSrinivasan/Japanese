@@ -58,7 +58,7 @@ export async function fetchUserProgress(userName: string): Promise<Vocabulary[]>
     
     const vocabularyData = data.users[0]?.vocabularyConnection.edges || [];
     
-    const vocabularies = vocabularyData.map((edge) => {
+    const vocabularies = vocabularyData.map((edge: any) => {
       const { english, hiragana, japanese } = edge.node;
       const { level, lastSeen } = edge;
       return new Vocabulary(japanese, hiragana, english, level, lastSeen);
