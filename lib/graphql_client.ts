@@ -6,6 +6,7 @@ import {
   } from "@apollo/client";
 
 import Vocabulary from '../resources/vocabulary'
+import { type } from "os";
   
 const client = new ApolloClient({
     link: new HttpLink({ uri: '/api/graphql' }),
@@ -57,11 +58,10 @@ export async function fetchUserProgress(userName: string): Promise<Vocabulary[]>
     });
     
     const vocabularyData = data.users[0]?.vocabularyConnection.edges || [];
-    
     const vocabularies = vocabularyData.map((edge: any) => {
       const { english, hiragana, japanese } = edge.node;
       const { level, lastSeen } = edge;
-      return new Vocabulary(japanese, hiragana, english, level, lastSeen);
+      return new Vocabulary(japanese, hiragana, english, level, new Date(lastSeen));
     });
 
     console.log('Returning data', vocabularies);

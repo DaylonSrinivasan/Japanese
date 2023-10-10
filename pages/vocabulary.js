@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { fetchUserProgress, updateUserProgress } from '../lib/graphql_client';
+import { SRS } from '../lib/srs';
 
 const USERNAME = 'daylon';
 
 function VocabularyQuiz() {
-  const [vocabularies, setVocabularies] = useState([]);
   const [currentVocabulary, setCurrentVocabulary] = useState(null);
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
+  const [srs, setSRS] = useState(null);
 
   useEffect(() => {
     async function loadVocabularies() {
       try {
         const fetchedVocabularies = await fetchUserProgress(USERNAME);
-        setVocabularies(fetchedVocabularies);
-        selectRandomVocabulary(fetchedVocabularies);
+        setSRS(new SRS(fetchedVocabularies));
+        setCurrentVocabulary(srs.getNext());
       } catch (error) {
         console.error('Error fetching vocabularies', error);
       }
@@ -23,10 +24,11 @@ function VocabularyQuiz() {
     loadVocabularies();
   }, []);
 
-  const selectRandomVocabulary = (vocabList) => {
-    const randomIndex = Math.floor(Math.random() * vocabList.length);
-    setCurrentVocabulary(vocabList[randomIndex]);
-  };
+  useEffect(() => {
+    if (srs !== null) {
+      setCurrentVocabulary(srs.getNext());
+    }
+  }, [srs]);
 
   const handleInputChange = (event) => {
     setUserInput(event.target.value);
@@ -52,13 +54,13 @@ function VocabularyQuiz() {
       currentVocabulary.lastSeen = new Date();
 
       setUserInput('');
-      selectRandomVocabulary(vocabularies);
+      setCurrentVocabulary(srs.getNext());
     }
   };
 
   const handleSaveProgress = async () => {
     try {
-      await updateUserProgress(USERNAME, vocabularies);
+      await updateUserProgress(USERNAME, srs.items);
       setFeedback('Progress saved!');
     } catch (error) {
       console.error('Error saving progress', error);
@@ -76,7 +78,7 @@ function VocabularyQuiz() {
         <div>
           <p>Japanese: {currentVocabulary.japanese}</p>
           <p>Level: {currentVocabulary.level}</p>
-          <p>Last Seen: {currentVocabulary.lastSeen}</p>
+          <p>Last Seen: {currentVocabulary.lastSeen.toLocaleString()}</p>
           <input
             type="text"
             value={userInput}

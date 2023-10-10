@@ -1,18 +1,15 @@
-import { DateTime } from "neo4j-driver";
+import { SRSItem } from "../lib/srs"
 
-export default class Vocabulary {
+export default class Vocabulary extends SRSItem {
     japanese: String;
     hiragana: String;
     english: String;
-    level: number;
-    lastSeen: DateTime;
 
-    constructor(japanese: String, hiragana: String, english: String, level: number, lastSeen: DateTime) {
+    constructor(japanese: String, hiragana: String, english: String, level: number, lastSeen: Date) {
+        super(level, lastSeen);
         this.japanese = japanese;
         this.hiragana = hiragana;
         this.english = english;
-        this.level = level;
-        this.lastSeen = lastSeen;
     }
 
     toString(): string {

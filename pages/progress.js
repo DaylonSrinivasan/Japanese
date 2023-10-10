@@ -72,7 +72,7 @@ function UserProfilePage() {
                   <td>{vocabulary.japanese}</td>
                   <td>{vocabulary.hiragana}</td>
                   <td>{vocabulary.level}</td>
-                  <td>{vocabulary.lastSeen}</td>
+                  <td>{vocabulary.lastSeen.toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
