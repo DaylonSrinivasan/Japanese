@@ -10,9 +10,10 @@ function VocabularyQuiz() {
   const [currentVocabulary, setCurrentVocabulary] = useState(null);
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
-  const [srs, setSRS] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState('');
-  const [enterPressCount, setEnterPressCount] = useState(0);
+  const [numCorrectAnswers, setNumCorrectAnswers] = useState(0);
+  const [srs, setSRS] = useState(null);
+  const [quizPhase, setQuizPhase] = useState(1); // 1: Hiragana, 2: Hiragana Feedback, 3: English, 4: English Feedback
 
   useEffect(() => {
     async function loadVocabularies() {
@@ -20,6 +21,7 @@ function VocabularyQuiz() {
         const fetchedVocabularies = await fetchUserProgress(USERNAME);
         setSRS(new SRS(fetchedVocabularies));
         setCurrentVocabulary(srs.getNext());
+        setQuizPhase(1); // Start with phase 1 (Hiragana).
       } catch (error) {
         console.error('Error fetching vocabularies', error);
       }
@@ -31,6 +33,7 @@ function VocabularyQuiz() {
   useEffect(() => {
     if (srs !== null) {
       setCurrentVocabulary(srs.getNext());
+      setQuizPhase(1); // Start with phase 1 (Hiragana).
     }
   }, [srs]);
 
@@ -40,43 +43,55 @@ function VocabularyQuiz() {
 
   const handleEnterKey = (event) => {
     if (event.key === 'Enter') {
-      if (enterPressCount === 0) {
-        // On the first Enter press, display feedback and show the hint.
+      if (quizPhase === 1 || quizPhase === 3) {
+        // Phase 1 or 3: Check the answer and move to the feedback phase.
         checkAnswer();
-        setEnterPressCount(1);
-      } else {
-        // On the second Enter press, advance to the next question.
+      } else if (quizPhase === 2 || quizPhase === 4) {
+        // Phase 2 or 4: Move to the next question and reset feedback.
         nextQuestion();
-        setEnterPressCount(0);
       }
     }
   };
 
   const checkAnswer = () => {
     if (currentVocabulary) {
-      const success = userInput.toLowerCase() === currentVocabulary.english.toLowerCase();
-      const feedback = success ? 'Correct!' : 'Incorrect!';
-      setFeedback(feedback);
+      let success = false;
+      let correctAnswer = '';
 
-      if (!success) {
-        // If the answer is incorrect, set the correct answer for display.
-        setCorrectAnswer(`Correct answer: ${currentVocabulary.english}`);
-      } else {
-        setCorrectAnswer(''); // Clear the correct answer when the answer is correct.
+      if (quizPhase === 1) {
+        // Phase 1: Check Hiragana.
+        success = userInput.toLowerCase() === currentVocabulary.hiragana.toLowerCase();
+        correctAnswer = `Correct Hiragana: ${currentVocabulary.hiragana}`;
+      } else if (quizPhase === 3) {
+        // Phase 3: Check English.
+        success = userInput.toLowerCase() === currentVocabulary.english.toLowerCase();
+        correctAnswer = `Correct English: ${currentVocabulary.english}`;
       }
 
-      srs.processFeedback(currentVocabulary, success);
-      setUserInput('');
-      handleSaveProgress();
+      if (success) {
+        setFeedback('Correct!');
+        setNumCorrectAnswers(numCorrectAnswers + 1); // Increment the correct answer count
+      } else {
+        setFeedback('Incorrect!');
+      }
+      setCorrectAnswer(correctAnswer); // Set the correct answer for display.
+
+      setQuizPhase(quizPhase + 1); // Move to the feedback phase.
     }
   };
 
   const nextQuestion = () => {
     setFeedback('');
+    setUserInput('');
     setCorrectAnswer('');
-    setCurrentVocabulary(srs.getNext());
+    setQuizPhase((quizPhase % 4) + 1); // Move to the next question phase (1 to 4).
+    if (quizPhase === 4) {
+      srs.processFeedback(currentVocabulary, numCorrectAnswers == 2);
+      handleSaveProgress();
+      setNumCorrectAnswers(0);
+      setCurrentVocabulary(srs.getNext()); // Advance to the next question.
+    }
   };
-
 
   const handleSaveProgress = async () => {
     try {
@@ -96,6 +111,15 @@ function VocabularyQuiz() {
       {currentVocabulary && (
         <div className="vocabulary-card">
           <p>Japanese: {currentVocabulary.japanese}</p>
+          {quizPhase === 1 || quizPhase === 2 ? (
+            <>
+              <p>{'What is the hiragana reading?'}</p>
+            </>
+          ) : (
+            <>
+              <p>{'What is the English reading?'}</p>
+            </>
+          )}
           <p>Level: {currentVocabulary.level}</p>
           <p>Last Seen: {currentVocabulary.lastSeen.toLocaleString()}</p>
           <input
