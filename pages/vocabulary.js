@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { fetchUserProgress, updateUserProgress } from '../lib/graphql_client';
 import { SRS } from '../lib/srs';
 import '../styles/vocabulary_quiz.css';
+import { toKana } from 'wanakana';
 
 const USERNAME = 'daylon';
 
 function VocabularyQuiz() {
   const [currentVocabulary, setCurrentVocabulary] = useState(null);
   const [userInput, setUserInput] = useState('');
+  const [hiraganaInput, setHiraganaInput] = useState(''); // Store the converted hiragana input
   const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [numCorrectAnswers, setNumCorrectAnswers] = useState(0);
@@ -38,7 +40,12 @@ function VocabularyQuiz() {
   }, [srs]);
 
   const handleInputChange = (event) => {
-    setUserInput(event.target.value);
+    const input = event.target.value;
+    setUserInput(input); // Keep track of the raw user input.
+  
+    // Conditionally convert to hiragana only when quizzing hiragana.
+    const convertedHiragana = quizPhase === 1 ? toKana(input, { IMEMode: 'Romaji' }) : input;
+    setHiraganaInput(convertedHiragana);
   };
 
   const handleEnterKey = (event) => {
@@ -60,7 +67,7 @@ function VocabularyQuiz() {
 
       if (quizPhase === 1) {
         // Phase 1: Check Hiragana.
-        success = userInput.toLowerCase() === currentVocabulary.hiragana.toLowerCase();
+        success = hiraganaInput.toLowerCase() === currentVocabulary.hiragana.toLowerCase();
         correctAnswer = `Correct Hiragana: ${currentVocabulary.hiragana}`;
       } else if (quizPhase === 3) {
         // Phase 3: Check English.
@@ -83,10 +90,11 @@ function VocabularyQuiz() {
   const nextQuestion = () => {
     setFeedback('');
     setUserInput('');
+    setHiraganaInput(''); // Clear the converted hiragana input
     setCorrectAnswer('');
     setQuizPhase((quizPhase % 4) + 1); // Move to the next question phase (1 to 4).
     if (quizPhase === 4) {
-      srs.processFeedback(currentVocabulary, numCorrectAnswers == 2);
+      srs.processFeedback(currentVocabulary, numCorrectAnswers === 2);
       handleSaveProgress();
       setNumCorrectAnswers(0);
       setCurrentVocabulary(srs.getNext()); // Advance to the next question.
@@ -122,9 +130,10 @@ function VocabularyQuiz() {
           )}
           <p>Level: {currentVocabulary.level}</p>
           <p>Last Seen: {currentVocabulary.lastSeen.toLocaleString()}</p>
+          <p>Number of Correct Answers: {numCorrectAnswers}</p> {/* Display the number of correct answers */}
           <input
             type="text"
-            value={userInput}
+            value={hiraganaInput}
             onChange={handleInputChange}
             onKeyPress={handleEnterKey}
             className="vocabulary-input"
