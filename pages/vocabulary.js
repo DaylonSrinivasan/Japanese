@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { fetchUserProgress, updateUserProgress } from '../lib/graphql_client';
-import { DateTime } from "neo4j-driver";
 
 const USERNAME = 'daylon';
 

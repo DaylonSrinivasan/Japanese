@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import SRS from '../lib/srs.ts'; // Import the SRS module (adjust the path as needed)
+import {SRSItem, SRS} from '../lib/srs.ts'; // Import the SRS module (adjust the path as needed)
 import { ADJECTIVE_CONJUGATIONS } from '../data/adjective_conjugations.js';
 import '../styles/conjugation_quiz.css'; // Import your CSS file
 
-class SRSElement {
+class SRSElement extends SRSItem {
   constructor(index, conjugation) {
-      this.index = index;
-      this.conjugation = conjugation;
+    super(0, new Date());
+    this.index = index;
+    this.conjugation = conjugation;
   }
 
   toString() {
@@ -86,7 +87,7 @@ function App() {
   };
 
   const startNewQuiz = () => {
-    setQuizData(getQuizData(srs.getNextElement()));
+    setQuizData(getQuizData(srs.getNext()));
     setUserAnswer('');
     setFeedback('');
     setEnterPressCount(0);

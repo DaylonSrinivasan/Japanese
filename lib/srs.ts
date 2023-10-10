@@ -1,28 +1,21 @@
 // https://chat.openai.com/share/bad7dc23-ac9e-484b-a0a9-3be2a477db5d
-class SRSItem < T > {
-    element: T;
-    level: number;
-    lastSeen: Date;
+export abstract class SRSItem {
 
-    constructor(element: T) {
-        this.element = element;
-        this.level = 0;
-        this.lastSeen = new Date(0); // Initialize to epoch
+    constructor(public level: number, public lastSeen: Date) {
+        this.level = level;
+        this.lastSeen = lastSeen;
     }
 
-    toString(): string {
-        return `SRSItem { element: ${this.element}, level: ${this.level}, lastSeen: ${this.lastSeen} }`;
-    }
+    abstract toString(): string;
 }
 
-class SRS < T > {
-    items: SRSItem < T > [];
+export class SRS {
 
-    constructor(elements: T[]) {
-        if (elements.length === 0) {
+    constructor(public items: SRSItem[]) {
+        if (items.length === 0) {
             throw new Error('Elements cannot be an empty list.');
         }
-        this.items = elements.map((element) => new SRSItem(element));
+        this.items = items;
     }
 
     private levelDelays = [
@@ -33,14 +26,14 @@ class SRS < T > {
         60 * 60 * 1000 // level 4: 60 minute delay
     ];
 
-    getNextElement(): T {
+    getNext(): SRSItem {
         const now = new Date();
         const eligibleItems = this.items.filter(item => now.getTime() >= item.lastSeen.getTime() + this.levelDelays[item.level]);
         console.log('Eligible items length ' + eligibleItems.length);
         // No elements need testing, get a random one.
         if (eligibleItems.length === 0) {
             const randomNumber = Math.floor(Math.random() * this.items.length);
-            return this.items[randomNumber].element;
+            return this.items[randomNumber];
         }
         eligibleItems.sort((a, b) => {
             // Sort by highest level first
@@ -51,13 +44,12 @@ class SRS < T > {
                 return a.lastSeen.getTime() - b.lastSeen.getTime();
             }
         });
-        return eligibleItems[0].element;
+        return eligibleItems[0];
     }
 
-    processFeedback(element: T, success: boolean): void {
-        const item = this.items.find((item) => item.element === element);
-        if (!item) {
-            throw new Error("Element not found in the SRS list.");
+    processFeedback(item: SRSItem, success: boolean): void {
+        if (!this.items.includes(item)) {
+            throw new Error("Item not found in the SRS list.");
         }
         item.level = Math.max(item.level, 1); // This item has been seen, so it will be at least level 1.
         item.lastSeen = new Date();
@@ -68,5 +60,3 @@ class SRS < T > {
         }
     }
 }
-
-export default SRS;
