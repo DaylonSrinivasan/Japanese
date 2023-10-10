@@ -13,6 +13,7 @@ function VocabularyQuiz() {
   const [srs, setSRS] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [enterPressCount, setEnterPressCount] = useState(0);
+  const [questionCounter, setQuestionCounter] = useState(0); // Counter for questions answered.
 
   // Define showHint outside the if (currentVocabulary) block.
   const [showHint, setShowHint] = useState(false);
@@ -70,6 +71,13 @@ function VocabularyQuiz() {
 
       srs.processFeedback(currentVocabulary, success);
       setUserInput('');
+
+      // Increment the question counter and check if it's 5.
+      setQuestionCounter((count) => count + 1);
+      if (questionCounter >= 5) {
+        handleSaveProgress(); // Call updateUserProgress every 5 questions.
+        setQuestionCounter(0); // Reset the counter.
+      }
     }
   };
 
@@ -130,10 +138,6 @@ function VocabularyQuiz() {
           )}
         </div>
       )}
-
-      <button onClick={handleSaveProgress} className="save-button">
-        Save Progress
-      </button>
     </div>
   );
 }
