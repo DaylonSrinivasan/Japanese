@@ -1,6 +1,8 @@
+// VocabularyQuiz.js
 import React, { useState, useEffect } from 'react';
 import { fetchUserProgress, updateUserProgress } from '../lib/graphql_client';
 import { SRS } from '../lib/srs';
+import '../styles/vocabulary_quiz.css';
 
 const USERNAME = 'daylon';
 
@@ -9,6 +11,11 @@ function VocabularyQuiz() {
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
   const [srs, setSRS] = useState(null);
+  const [correctAnswer, setCorrectAnswer] = useState('');
+  const [enterPressCount, setEnterPressCount] = useState(0);
+
+  // Define showHint outside the if (currentVocabulary) block.
+  const [showHint, setShowHint] = useState(false);
 
   useEffect(() => {
     async function loadVocabularies() {
@@ -36,19 +43,45 @@ function VocabularyQuiz() {
 
   const handleEnterKey = (event) => {
     if (event.key === 'Enter') {
-      checkAnswer();
+      if (enterPressCount === 0) {
+        // On the first Enter press, display feedback and show the hint.
+        checkAnswer();
+        setEnterPressCount(1);
+      } else {
+        // On the second Enter press, advance to the next question.
+        nextQuestion();
+        setEnterPressCount(0);
+      }
     }
   };
 
   const checkAnswer = () => {
     if (currentVocabulary) {
-      const success = (userInput.toLowerCase() === currentVocabulary.english.toLowerCase());
+      const success = userInput.toLowerCase() === currentVocabulary.english.toLowerCase();
       const feedback = success ? 'Correct!' : 'Incorrect!';
       setFeedback(feedback);
+
+      if (!success) {
+        // If the answer is incorrect, set the correct answer for display.
+        setCorrectAnswer(`Correct answer: ${currentVocabulary.english}`);
+      } else {
+        setCorrectAnswer(''); // Clear the correct answer when the answer is correct.
+      }
+
       srs.processFeedback(currentVocabulary, success);
       setUserInput('');
-      setCurrentVocabulary(srs.getNext());
     }
+  };
+
+  const nextQuestion = () => {
+    setFeedback('');
+    setCorrectAnswer('');
+    setCurrentVocabulary(srs.getNext());
+    setShowHint(false); // Hide the hint when moving to the next question.
+  };
+
+  const showHintClick = () => {
+    setShowHint(true); // Display the hint (hiragana) when the hint button is clicked.
   };
 
   const handleSaveProgress = async () => {
@@ -62,13 +95,13 @@ function VocabularyQuiz() {
   };
 
   return (
-    <div>
-      <div>
+    <div className="vocabulary-container">
+      <div className="vocabulary-header text-center">
         <h2>Vocabulary Quiz</h2>
       </div>
 
       {currentVocabulary && (
-        <div>
+        <div className="vocabulary-card">
           <p>Japanese: {currentVocabulary.japanese}</p>
           <p>Level: {currentVocabulary.level}</p>
           <p>Last Seen: {currentVocabulary.lastSeen.toLocaleString()}</p>
@@ -77,13 +110,30 @@ function VocabularyQuiz() {
             value={userInput}
             onChange={handleInputChange}
             onKeyPress={handleEnterKey}
+            className="vocabulary-input"
           />
-          <button onClick={checkAnswer}>Submit</button>
-          <p>{feedback}</p>
+          <div className="button-container">
+            <button onClick={showHintClick} className="vocabulary-button">
+              Hint
+            </button>
+          </div>
+          <p className="vocabulary-feedback">{feedback}</p>
+
+          {feedback === 'Incorrect!' && (
+            <p className="correct-answer">{correctAnswer}</p>
+          )}
+
+          {showHint && (
+            <p className="vocabulary-hint">
+              Hiragana Hint: {currentVocabulary.hiragana}
+            </p>
+          )}
         </div>
       )}
 
-      <button onClick={handleSaveProgress}>Save Progress</button>
+      <button onClick={handleSaveProgress} className="save-button">
+        Save Progress
+      </button>
     </div>
   );
 }
