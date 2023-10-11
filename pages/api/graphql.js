@@ -8,10 +8,10 @@ const { NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD } = process.env;
 const typeDefs = /* GraphQL */ `
   type User {
     name: String!
-    vocabulary: [Vocabulary!]! @relationship(type: "STUDIES", direction: OUT, properties: "StudiesProperties")
+    translation: [Translation!]! @relationship(type: "STUDIES", direction: OUT, properties: "StudiesProperties")
   }
 
-  type Vocabulary {
+  type Translation {
     japanese: String!
     hiragana: String!
     english: String!
@@ -29,7 +29,7 @@ const typeDefs = /* GraphQL */ `
 // mutation UpdateDaylonsProgress {
 //   updateUsers(
 //     where: {name: "daylon"}
-//     update: {vocabulary: [
+//     update: {translation: [
 //       {update: {edge: {level: 3}}, where: {node: {english: "hello"}}},
 //       {update: {edge: {level: 3}}, where: {node: {english: "I am studying"}}}
 //     ]}

@@ -5,7 +5,7 @@ import {
     HttpLink,
   } from "@apollo/client";
 
-import Vocabulary from '../resources/vocabulary'
+import Translation from '../resources/translation'
   
 const client = new ApolloClient({
     link: new HttpLink({ uri: '/api/graphql' }),
@@ -15,7 +15,7 @@ const client = new ApolloClient({
 const FETCH_USER_PROGRESS = gql`
   query FetchUserProgress($userName: String!) {
     users(where: { name: $userName }) {
-      vocabularyConnection {
+      translationConnection {
         edges {
           level
           lastSeen
@@ -33,12 +33,12 @@ const FETCH_USER_PROGRESS = gql`
 const UPDATE_USER_PROGRESS = gql`
 mutation UpdateUserProgress(
   $userName: String!,
-  $vocabularies: [UserVocabularyUpdateFieldInput!]!
+  $translations: [UserTranslationUpdateFieldInput!]!
 ) {
   updateUsers(
     where: { name: $userName }
     update: {
-      vocabulary: $vocabularies
+      translation: $translations
     }
   ) {
     users {
@@ -48,7 +48,7 @@ mutation UpdateUserProgress(
 }
 `
 
-export async function fetchUserProgress(userName: string): Promise<Vocabulary[]> {
+export async function fetchUserProgress(userName: string): Promise<Translation[]> {
   console.log('Called fetchUserProgress with userName ' + userName);
   try {
     const { data } = await client.query({
@@ -56,35 +56,35 @@ export async function fetchUserProgress(userName: string): Promise<Vocabulary[]>
       variables: { userName },
     });
     
-    const vocabularyData = data.users[0]?.vocabularyConnection.edges || [];
-    const vocabularies = vocabularyData.map((edge: any) => {
+    const translationData = data.users[0]?.translationConnection.edges || [];
+    const translations = translationData.map((edge: any) => {
       const { english, hiragana, japanese } = edge.node;
       const { level, lastSeen } = edge;
-      return new Vocabulary(japanese, hiragana, english, level, new Date(lastSeen));
+      return new Translation(japanese, hiragana, english, level, new Date(lastSeen));
     });
 
-    console.log('Returning data', vocabularies);
-    return vocabularies;
+    console.log('Returning data', translations);
+    return translations;
   } catch (error) {
     console.error('Error:', error);
     throw error;
   }
 }
 
-export async function updateUserProgress(userName: string, vocabularies: Vocabulary[]): Promise<JSON> {
-  console.log('Called updateUserProgress with userName ' + userName + ' vocabularies ' + vocabularies);
+export async function updateUserProgress(userName: string, translations: Translation[]): Promise<JSON> {
+  console.log('Called updateUserProgress with userName ' + userName + ' translations ' + translations);
   try {
-    const vocabUpdates = vocabularies.map((vocabulary) => {
+    const vocabUpdates = translations.map((translation) => {
       return {
         update: {
           edge: {
-            level: vocabulary.level,
-            lastSeen: vocabulary.lastSeen,
+            level: translation.level,
+            lastSeen: translation.lastSeen,
           },
         },
         where: {
           node: {
-            japanese: vocabulary.japanese,
+            japanese: translation.japanese,
           },
         },
       };
@@ -94,7 +94,7 @@ export async function updateUserProgress(userName: string, vocabularies: Vocabul
       mutation: UPDATE_USER_PROGRESS,
       variables: {
         userName,
-        vocabularies: vocabUpdates,
+        translations: vocabUpdates,
       },
     });
 

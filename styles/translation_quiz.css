@@ -1,7 +1,7 @@
-/* VocabularyQuiz.css */
+/* TranslationQuiz.css */
 
 /* Container styles */
-.vocabulary-container {
+.translation-container {
   font-family: Arial, sans-serif;
   text-align: center;
   margin: 0 auto;
@@ -10,7 +10,7 @@
 }
 
 /* Header styles */
-.vocabulary-header {
+.translation-header {
   background-color: #007bff;
   color: #fff;
   font-size: 24px;
@@ -18,8 +18,8 @@
   border-radius: 5px;
 }
 
-/* Vocabulary card styles */
-.vocabulary-card {
+/* Translation card styles */
+.translation-card {
   background-color: #f0f0f0;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -28,13 +28,13 @@
 }
 
 /* Input and button styles */
-.vocabulary-input {
+.translation-input {
   width: 80%; /* Adjust the width as needed */
   padding: 10px;
   font-size: 16px;
 }
 
-.vocabulary-button {
+.translation-button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -46,7 +46,7 @@
 }
 
 /* Feedback styles */
-.vocabulary-feedback {
+.translation-feedback {
   margin-top: 20px;
   font-size: 18px;
   color: #007bff; /* Default color for feedback */
@@ -84,12 +84,12 @@
 }
 
 /* Add different font sizes to specific elements */
-.vocabulary-card p:nth-child(1),
-.vocabulary-card p:nth-child(2) {
+.translation-card p:nth-child(1),
+.translation-card p:nth-child(2) {
   font-size: 30px; /* Font size for the first two lines */
 }
 
-.vocabulary-card p:nth-child(3),
-.vocabulary-card p:nth-child(4) {
+.translation-card p:nth-child(3),
+.translation-card p:nth-child(4) {
   font-size: 20px; /* Font size for the second two lines */
 }

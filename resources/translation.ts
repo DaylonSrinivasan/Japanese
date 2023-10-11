@@ -1,6 +1,6 @@
 import { SRSItem } from "../lib/srs"
 
-export default class Vocabulary extends SRSItem {
+export default class Translation extends SRSItem {
     japanese: String;
     hiragana: String;
     english: String;
@@ -13,6 +13,6 @@ export default class Vocabulary extends SRSItem {
     }
 
     toString(): string {
-        return `Vocabulary { english: ${this.english}, level: ${this.level}, lastSeen: ${this.lastSeen} }`;
+        return `Translation { english: ${this.english}, level: ${this.level}, lastSeen: ${this.lastSeen} }`;
     }
 }
