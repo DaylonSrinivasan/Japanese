@@ -82,3 +82,14 @@
 .text-center {
   text-align: center;
 }
+
+/* Add different font sizes to specific elements */
+.vocabulary-card p:nth-child(1),
+.vocabulary-card p:nth-child(2) {
+  font-size: 30px; /* Font size for the first two lines */
+}
+
+.vocabulary-card p:nth-child(3),
+.vocabulary-card p:nth-child(4) {
+  font-size: 20px; /* Font size for the second two lines */
+}

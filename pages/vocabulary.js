@@ -128,8 +128,6 @@ function VocabularyQuiz() {
               <p>{'What is the English reading?'}</p>
             </>
           )}
-          <p>Level: {currentVocabulary.level}</p>
-          <p>Last Seen: {currentVocabulary.lastSeen.toLocaleString()}</p>
           <input
             type="text"
             value={hiraganaInput}
@@ -142,6 +140,8 @@ function VocabularyQuiz() {
           {feedback === 'Incorrect!' && (
             <p className="correct-answer">{correctAnswer}</p>
           )}
+          <p>Level: {currentVocabulary.level}</p>
+          <p>Last Seen: {currentVocabulary.lastSeen.toLocaleString()}</p>
         </div>
       )}
     </div>
