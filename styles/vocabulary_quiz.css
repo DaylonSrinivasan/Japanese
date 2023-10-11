@@ -2,81 +2,83 @@
 
 /* Container styles */
 .vocabulary-container {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0 auto;
-    padding: 20px;
-    max-width: 600px;
-  }
-  
-  /* Header styles */
-  .vocabulary-header {
-    background-color: #007bff;
-    color: #fff;
-    font-size: 24px;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  /* Vocabulary card styles */
-  .vocabulary-card {
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    margin-top: 20px;
-  }
-  
-  /* Input and button styles */
-  .vocabulary-input {
-    width: 80%; /* Adjust the width as needed */
-    padding: 10px;
-    font-size: 16px;
-  }
-  
-  .vocabulary-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  /* Feedback styles */
-  .vocabulary-feedback {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #007bff;
-  }
-  
-  /* Correct answer styles */
-  .correct-answer {
-    font-size: 16px;
-    color: #28a745;
-    margin-top: 10px;
-  }
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 600px;
+}
 
-  .incorrect-feedback {
-    color: #ff0000; /* Red color for incorrect feedback */
-  }
-  
-  /* Save button styles */
-  .save-button {
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  
-  /* Centered text styles */
-  .text-center {
-    text-align: center;
-  }
-  
+/* Header styles */
+.vocabulary-header {
+  background-color: #007bff;
+  color: #fff;
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Vocabulary card styles */
+.vocabulary-card {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Input and button styles */
+.vocabulary-input {
+  width: 80%; /* Adjust the width as needed */
+  padding: 10px;
+  font-size: 16px;
+}
+
+.vocabulary-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Feedback styles */
+.vocabulary-feedback {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #007bff; /* Default color for feedback */
+}
+
+/* Correct answer styles */
+.correct-answer {
+  font-size: 16px;
+  color: #28a745; /* Green color for correct feedback */
+  margin-top: 10px;
+}
+
+/* Incorrect feedback styles */
+.incorrect-feedback {
+  font-size: 16px;
+  color: #ff0000; /* Red color for incorrect feedback */
+  margin-top: 10px;
+}
+
+/* Save button styles */
+.save-button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Centered text styles */
+.text-center {
+  text-align: center;
+}

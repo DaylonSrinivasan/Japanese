@@ -41,8 +41,8 @@ function VocabularyQuiz() {
 
   const handleInputChange = (event) => {
     const input = event.target.value;
-    setUserInput(input); // Keep track of the raw user input.
-  
+    setUserInput(input); // Keep track of the raw user input
+
     // Conditionally convert to hiragana only when quizzing hiragana.
     const convertedHiragana = quizPhase === 1 ? toKana(input, { IMEMode: 'Romaji' }) : input;
     setHiraganaInput(convertedHiragana);
@@ -137,7 +137,7 @@ function VocabularyQuiz() {
             onKeyPress={handleEnterKey}
             className="vocabulary-input"
           />
-          <p className="vocabulary-feedback">{feedback}</p>
+          <p className={`vocabulary-feedback ${feedback === 'Correct!' ? 'correct-answer' : feedback === 'Incorrect!' ? 'incorrect-feedback' : ''}`}>{feedback}</p>
 
           {feedback === 'Incorrect!' && (
             <p className="correct-answer">{correctAnswer}</p>
