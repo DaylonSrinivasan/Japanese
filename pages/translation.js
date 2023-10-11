@@ -95,15 +95,15 @@ function TranslationQuiz() {
     setQuizPhase((quizPhase % 4) + 1); // Move to the next question phase (1 to 4).
     if (quizPhase === 4) {
       srs.processFeedback(currentTranslation, numCorrectAnswers === 2);
-      handleSaveProgress();
+      handleSaveProgress(currentTranslation);
       setNumCorrectAnswers(0);
       setCurrentTranslation(srs.getNext()); // Advance to the next question.
     }
   };
 
-  const handleSaveProgress = async () => {
+  const handleSaveProgress = async (translation) => {
     try {
-      await updateUserProgress(USERNAME, srs.items);
+      await updateUserProgress(USERNAME, [translation]);
     } catch (error) {
       console.error('Error saving progress', error);
       setFeedback('Error saving progress');
