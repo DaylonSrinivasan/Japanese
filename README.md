@@ -21,8 +21,18 @@ This is used to populate our study data (such as Japanese vocab).
 
 ```
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/DaylonSrinivasan/Japanese/main/data/vocabulary.csv/{token}' AS row
-MERGE (v:Vocabulary {japanese: row.japanese})
+MERGE (v:Vocabulary:Translation {japanese: row.japanese})
 ON CREATE SET v.hiragana = row.hiragana, v.english = row.english;
+```
+
+3. Create connections between the user ("daylon") and newly added translations by entering:
+
+```
+MATCH (user:User {name: "daylon"})
+MATCH (translation:Translation)
+WHERE NOT (user)-[:STUDIES]->(translation)
+CREATE (user)-[r:STUDIES {level: 0, lastSeen: datetime()}]->(translation)
+RETURN r;
 ```
 
 1. create a .env file with neo4j credentials (see .env.example)
