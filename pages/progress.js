@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUserProgress, updateUserProgress } from '../lib/graphql_client';
-import Vocabulary from '../resources/vocabulary';
+import Translation from '../resources/translation';
 
 function UserProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [vocabularies, setVocabularies] = useState([]);
+  const [translations, setTranslations] = useState([]);
 
   useEffect(() => {
     const userName = 'daylon'; // Replace with the user name you want to fetch
@@ -13,7 +13,7 @@ function UserProfilePage() {
     fetchUserProgress(userName)
       .then((result) => {
         if (result) {
-          setVocabularies(result);
+          setTranslations(result);
         }
         setLoading(false);
       })
@@ -23,24 +23,24 @@ function UserProfilePage() {
       });
   }, []);
 
-  const resetVocabularies = async () => {
+  const resetTranslations = async () => {
     const currentTime = new Date().toISOString();
 
-    // Create an array of Vocabulary objects with reset values
-    const resetVocabularies = vocabularies.map((vocabulary) => new Vocabulary(
-      vocabulary.japanese,
-      vocabulary.hiragana,
-      vocabulary.english,
+    // Create an array of Translation objects with reset values
+    const resetTranslations = translations.map((translation) => new Translation(
+      translation.japanese,
+      translation.hiragana,
+      translation.english,
       0, // Reset level to 0
       currentTime, // Set lastSeen to the current time
     ));
 
     try {
       // Use the updateUserProgress method to save the reset values in the database
-      await updateUserProgress('daylon', resetVocabularies);
+      await updateUserProgress('daylon', resetTranslations);
 
       // Update the state with the reset values
-      setVocabularies(resetVocabularies);
+      setTranslations(resetTranslations);
     } catch (err) {
       setError(err);
     }
@@ -52,9 +52,9 @@ function UserProfilePage() {
         <p>Loading...</p>
       ) : error ? (
         <p>Error: {error.message}</p>
-      ) : vocabularies.length > 0 ? (
+      ) : translations.length > 0 ? (
         <div>
-          <h1>Daylons Vocabulary Progress</h1>
+          <h1>Daylons Translation Progress</h1>
           <table>
             <thead>
               <tr>
@@ -66,18 +66,18 @@ function UserProfilePage() {
               </tr>
             </thead>
             <tbody>
-              {vocabularies.map((vocabulary, index) => (
+              {translations.map((translation, index) => (
                 <tr key={index}>
-                  <td>{vocabulary.english}</td>
-                  <td>{vocabulary.japanese}</td>
-                  <td>{vocabulary.hiragana}</td>
-                  <td>{vocabulary.level}</td>
-                  <td>{vocabulary.lastSeen.toLocaleString()}</td>
+                  <td>{translation.english}</td>
+                  <td>{translation.japanese}</td>
+                  <td>{translation.hiragana}</td>
+                  <td>{translation.level}</td>
+                  <td>{translation.lastSeen.toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <button onClick={resetVocabularies}>Reset</button>
+          <button onClick={resetTranslations}>Reset</button>
         </div>
       ) : (
         <p>No data available.</p>
