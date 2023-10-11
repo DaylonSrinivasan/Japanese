@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUserProgress, updateUserProgress } from '../lib/graphql_client';
-import Translation from '../resources/translation';
+import '../styles/progress.css'
 
 function UserProfilePage() {
   const [loading, setLoading] = useState(true);
@@ -27,13 +27,11 @@ function UserProfilePage() {
     const currentTime = new Date().toISOString();
 
     // Create an array of Translation objects with reset values
-    const resetTranslations = translations.map((translation) => new Translation(
-      translation.japanese,
-      translation.hiragana,
-      translation.english,
-      0, // Reset level to 0
-      currentTime, // Set lastSeen to the current time
-    ));
+    const resetTranslations = translations.map((translation) => ({
+      ...translation,
+      level: 0, // Reset level to 0
+      lastSeen: currentTime, // Set lastSeen to the current time
+    }));
 
     try {
       // Use the updateUserProgress method to save the reset values in the database
@@ -46,8 +44,17 @@ function UserProfilePage() {
     }
   };
 
+  // Sort the translations by level and lastSeen in ascending order
+  translations.sort((a, b) => {
+    if (a.level !== b.level) {
+      return b.level - a.level;
+    } else {
+      return new Date(a.lastSeen) - new Date(b.lastSeen);
+    }
+  });
+
   return (
-    <div>
+    <div className="container">
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -72,7 +79,7 @@ function UserProfilePage() {
                   <td>{translation.japanese}</td>
                   <td>{translation.hiragana}</td>
                   <td>{translation.level}</td>
-                  <td>{translation.lastSeen.toLocaleString()}</td>
+                  <td>{new Date(translation.lastSeen).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
