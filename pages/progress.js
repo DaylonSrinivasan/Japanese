@@ -8,7 +8,7 @@ function UserProfilePage() {
   const [translations, setTranslations] = useState([]);
 
   useEffect(() => {
-    const userName = 'daylon'; // Replace with the user name you want to fetch
+    const userName = 'daylon';
 
     fetchUserProgress(userName)
       .then((result) => {
