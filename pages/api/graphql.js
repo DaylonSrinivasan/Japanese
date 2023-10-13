@@ -20,7 +20,7 @@ const typeDefs = /* GraphQL */ `
   interface StudiesProperties @relationshipProperties {
     level: Int!
     lastSeen: DateTime!
-}
+  }
 `;
 
 // Sample queries:
