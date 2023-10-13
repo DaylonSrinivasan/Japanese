@@ -59,6 +59,13 @@
   margin-top: 10px;
 }
 
+/* Similar feedback styles */
+.similar-feedback {
+  font-size: 16px;
+  color: #ff9500; /* Orange color for similar feedback */
+  margin-top: 10px;
+}
+
 /* Incorrect feedback styles */
 .incorrect-feedback {
   font-size: 16px;

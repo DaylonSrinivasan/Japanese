@@ -2,10 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { fetchUserProgress, updateUserProgress } from '../lib/graphql_client';
 import { SRS } from '../lib/srs';
+import { calculateSimilarity } from '../lib/levelstein';
 import '../styles/translation_quiz.css';
 import { toKana } from 'wanakana';
 
 const USERNAME = 'daylon';
+const SIMILARITY_THRESHOLD = 0.8;
+const FEEDBACK_CORRECT = 'Correct!'
+const FEEDBACK_SIMILAR = 'Similar!'
+const FEEDBACK_INCORRECT = 'Incorrect!'
 
 function TranslationQuiz() {
   const [currentTranslation, setCurrentTranslation] = useState(null);
@@ -67,22 +72,20 @@ function TranslationQuiz() {
 
       if (quizPhase === 1) {
         // Phase 1: Check Hiragana.
-        success = hiraganaInput.toLowerCase() === currentTranslation.hiragana.toLowerCase();
-        correctAnswer = `Correct Hiragana: ${currentTranslation.hiragana}`;
+        setFeedback(hiraganaInput === currentTranslation.hiragana ? FEEDBACK_CORRECT : FEEDBACK_INCORRECT);
+        setCorrectAnswer(`Correct Hiragana: ${currentTranslation.hiragana}`);
       } else if (quizPhase === 3) {
         // Phase 3: Check English.
-        success = userInput.toLowerCase() === currentTranslation.english.toLowerCase();
-        correctAnswer = `Correct English: ${currentTranslation.english}`;
+        const similarity = calculateSimilarity(userInput, currentTranslation.english);
+        if (similarity >= SIMILARITY_THRESHOLD) {
+          setFeedback(similarity === 1.0 ? FEEDBACK_CORRECT : FEEDBACK_SIMILAR);
+          setNumCorrectAnswers(numCorrectAnswers + 1); // Increment the correct answer count
+        }
+        else {
+          setFeedback(FEEDBACK_INCORRECT);
+        }
+        setCorrectAnswer(`Correct English: ${currentTranslation.english}`);
       }
-
-      if (success) {
-        setFeedback('Correct!');
-        setNumCorrectAnswers(numCorrectAnswers + 1); // Increment the correct answer count
-      } else {
-        setFeedback('Incorrect!');
-      }
-      setCorrectAnswer(correctAnswer); // Set the correct answer for display.
-
       setQuizPhase(quizPhase + 1); // Move to the feedback phase.
     }
   };
@@ -135,10 +138,12 @@ function TranslationQuiz() {
             onKeyPress={handleEnterKey}
             className="translation-input"
           />
-          <p className={`translation-feedback ${feedback === 'Correct!' ? 'correct-answer' : feedback === 'Incorrect!' ? 'incorrect-feedback' : ''}`}>{feedback}</p>
-
-          {feedback === 'Incorrect!' && (
+          <p className={`translation-feedback ${feedback === FEEDBACK_CORRECT || feedback === FEEDBACK_SIMILAR ? 'correct-answer' : feedback === FEEDBACK_INCORRECT ? 'incorrect-feedback' : ''}`}>{feedback}</p>
+          {feedback === FEEDBACK_INCORRECT && (
             <p className="correct-answer">{correctAnswer}</p>
+          )}
+          {feedback === FEEDBACK_SIMILAR && (
+            <p className="similar-feedback">{correctAnswer}</p>
           )}
           <p>Level: {currentTranslation.level}</p>
           <p>Last Seen: {currentTranslation.lastSeen.toLocaleString()}</p>
