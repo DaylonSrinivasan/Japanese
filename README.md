@@ -34,7 +34,7 @@ ON CREATE SET v.hiragana = row.hiragana, v.english = row.english;
 
 // Assuming the vocabulary words are already loaded into the graph as Vocabulary nodes
 MATCH (s:Sentence:Translation), (v:Vocabulary)
-WHERE s.japanese CONTAINS v.japanese
+WHERE s.japanese =~ ".*" + v.japanese + ".*"
 MERGE (s)-[:BUILDS_UPON]->(v);
 
 ```
