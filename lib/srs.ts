@@ -53,13 +53,16 @@ export class SRS {
             return this._items[randomNumber];
         }
         eligibleItems.sort((a, b) => {
-            // Sort by highest level first
-            if (a.level !== b.level) {
-                return b.level - a.level;
-            } else {
-                // If the levels are the same, sort by oldest lastSeen time
-                return a.lastSeen.getTime() - b.lastSeen.getTime();
+            if (a.level == b.level) {
+                if (a.level <= 4) {  // Below level 4 is the "learn" phase. You should see the recent elements often.
+                    return b.lastSeen.getTime() - a.lastSeen.getTime();
+                }
+                return a.lastSeen.getTime() - b.lastSeen.getTime(); // Above level 4 is the "recall" phase. You should see older elements more.
             }
+            if (a.level == 0 || b.level == 0) {
+                return b.level - a.level; // put elements with level 0 at the end.
+            }
+            return a.level - b.level; // sort by lowest level
         });
         return eligibleItems[0];
     }
