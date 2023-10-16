@@ -23,23 +23,6 @@ const typeDefs = /* GraphQL */ `
   }
 `;
 
-// Sample queries:
-
-
-// mutation UpdateDaylonsProgress {
-//   updateUsers(
-//     where: {name: "daylon"}
-//     update: {translation: [
-//       {update: {edge: {level: 3}}, where: {node: {english: "hello"}}},
-//       {update: {edge: {level: 3}}, where: {node: {english: "I am studying"}}}
-//     ]}
-//   ) {
-//     users {
-//       name
-//     }
-//   }
-// }
-
 // Create a Neo4j driver instance to connect to Neo4j AuraDB
 const driver = neo4j.driver(
   NEO4J_URI,
