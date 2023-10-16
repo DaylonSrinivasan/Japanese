@@ -53,16 +53,28 @@ export class SRS {
             return this._items[randomNumber];
         }
         eligibleItems.sort((a, b) => {
-            if (a.level == b.level) {
-                if (a.level <= 4) {  // Below level 4 is the "learn" phase. You should see the recent elements often.
-                    return b.lastSeen.getTime() - a.lastSeen.getTime();
+            const inLearningPhase = (x: SRSItem) => {
+                const now = new Date();
+                const fifteenMinutesAgo = new Date(now.getTime() - 15 * 60 * 1000); // Calculate a date 15 minutes ago
+                return x.level >= 1 && x.level <= 4 && x.lastSeen >= fifteenMinutesAgo;
+            };
+            const aInLearningPhase = inLearningPhase(a);
+            const bInLearningPhase = inLearningPhase(b);
+            if (aInLearningPhase && bInLearningPhase) {
+                return b.lastSeen.getTime() - a.lastSeen.getTime();
+            }
+            else if (aInLearningPhase) {
+                return -1;
+            }
+            else if (bInLearningPhase) {
+                return 1;
+            }
+            else {
+                if (a.level === b.level) {
+                    return a.lastSeen.getTime() - b.lastSeen.getTime();
                 }
-                return a.lastSeen.getTime() - b.lastSeen.getTime(); // Above level 4 is the "recall" phase. You should see older elements more.
+                return b.level - a.level;
             }
-            if (a.level == 0 || b.level == 0) {
-                return b.level - a.level; // put elements with level 0 at the end.
-            }
-            return a.level - b.level; // sort by lowest level
         });
         return eligibleItems[0];
     }

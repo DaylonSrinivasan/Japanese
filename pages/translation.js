@@ -72,14 +72,18 @@ function TranslationQuiz() {
 
       if (quizPhase === 1) {
         // Phase 1: Check Hiragana.
-        setFeedback(hiraganaInput === currentTranslation.hiragana ? FEEDBACK_CORRECT : FEEDBACK_INCORRECT);
+        const success = hiraganaInput === currentTranslation.hiragana;
+        setFeedback(success ? FEEDBACK_CORRECT : FEEDBACK_INCORRECT);
+        if (success) {
+          setNumCorrectAnswers(numCorrectAnswers + 1);
+        }
         setCorrectAnswer(`Correct Hiragana: ${currentTranslation.hiragana}`);
       } else if (quizPhase === 3) {
         // Phase 3: Check English.
         const similarity = calculateSimilarity(userInput, currentTranslation.english);
         if (similarity >= SIMILARITY_THRESHOLD) {
           setFeedback(similarity === 1.0 ? FEEDBACK_CORRECT : FEEDBACK_SIMILAR);
-          setNumCorrectAnswers(numCorrectAnswers + 1); // Increment the correct answer count
+          setNumCorrectAnswers(numCorrectAnswers + 1);
         }
         else {
           setFeedback(FEEDBACK_INCORRECT);
