@@ -5,14 +5,23 @@ export default class Translation extends SRSItem {
     hiragana: String;
     english: String;
 
-    constructor(japanese: String, hiragana: String, english: String, level: number, lastSeen: Date) {
-        super(level, lastSeen);
+    constructor(id: string, level: number, lastSeen: Date, japanese: String, hiragana: String, english: String) {
+        super(id, level, lastSeen);
         this.japanese = japanese;
         this.hiragana = hiragana;
         this.english = english;
     }
 
     toString(): string {
-        return `Translation { english: ${this.english}, level: ${this.level}, lastSeen: ${this.lastSeen} }`;
-    }
+        const requirementsString = this.requirements.map((requirement) => {
+          return `Requirement: id: ${requirement.id}, Level: ${requirement.level}`;
+        }).join('\n');
+        return `Translation { 
+          Japanese: ${this.japanese}, 
+          Current Level: ${this.level},
+          Requirements: 
+          ${requirementsString}
+        }`;
+      }
+      
 }

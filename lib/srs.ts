@@ -1,9 +1,18 @@
 // https://chat.openai.com/share/bad7dc23-ac9e-484b-a0a9-3be2a477db5d
 export abstract class SRSItem {
+    id: string;
+    level: number;
+    lastSeen: Date;
+    requirements: SRSItem[] = []; // Items that must be learned before this item.
 
-    constructor(public level: number, public lastSeen: Date) {
+    constructor(id: string, level: number, lastSeen: Date) {
+        this.id = id;
         this.level = level;
         this.lastSeen = lastSeen;
+    }
+
+    addRequirement(item: SRSItem) {
+        this.requirements.push(item);
     }
 
     abstract toString(): string;
@@ -45,7 +54,19 @@ export class SRS {
 
     getNext(): SRSItem {
         const now = new Date();
-        const eligibleItems = this._items.filter(item => now.getTime() >= item.lastSeen.getTime() + this.levelDelays[item.level]);
+        const eligibleItems = this._items.filter(item => {
+            const levelDelay = this.levelDelays[item.level];
+
+            // Check if the item itself is eligible based on its level and lastSeen
+            const isTimeEligible = now.getTime() >= item.lastSeen.getTime() + levelDelay;
+
+            // Check if all items in the "requirements" array are at least level 4
+            const areRequirementsMet = item.requirements.every(req => req.level >= 4);
+
+            // Return true if both conditions are met
+            return isTimeEligible && areRequirementsMet;
+          });
+
         console.log('Eligible items length ' + eligibleItems.length);
         // No elements need testing, get a random one.
         if (eligibleItems.length === 0) {
@@ -76,6 +97,7 @@ export class SRS {
                 return b.level - a.level;
             }
         });
+        console.log('The following item was chosen: ' + eligibleItems[0]);
         return eligibleItems[0];
     }
 

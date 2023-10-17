@@ -7,14 +7,17 @@ const { NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD } = process.env;
 
 const typeDefs = /* GraphQL */ `
   type User {
+    id: ID!
     name: String!
     translation: [Translation!]! @relationship(type: "STUDIES", direction: OUT, properties: "StudiesProperties")
   }
 
   type Translation {
+    id: ID!
     japanese: String!
     hiragana: String!
     english: String!
+    buildsUpon: [Translation!]! @relationship(type: "BUILDS_UPON", direction: OUT)
   }
 
   interface StudiesProperties @relationshipProperties {

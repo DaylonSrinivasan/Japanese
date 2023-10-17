@@ -13,21 +13,26 @@ const client = new ApolloClient({
   });
 
 const FETCH_USER_PROGRESS = gql`
-  query FetchUserProgress($userName: String!) {
-    users(where: { name: $userName }) {
-      translationConnection {
-        edges {
-          level
-          lastSeen
-          node {
-            english
-            hiragana
-            japanese
+query FetchUserProgress($userName: String!) {
+  users(where: { name: $userName }) {
+    translationConnection {
+      edges {
+        level
+        lastSeen
+        node {
+          id
+          english
+          hiragana
+          japanese
+          buildsUpon {
+            id
           }
         }
       }
     }
   }
+}
+
 `;
 
 const UPDATE_USER_PROGRESS = gql`
@@ -55,13 +60,30 @@ export async function fetchUserProgress(userName: string): Promise<Translation[]
       query: FETCH_USER_PROGRESS,
       variables: { userName },
     });
-    
+
     const translationData = data.users[0]?.translationConnection.edges || [];
-    const translations = translationData.map((edge: any) => {
-      const { english, hiragana, japanese } = edge.node;
+    const translationsMap = new Map();
+
+    translationData.forEach((edge: any) => {
+      const { english, hiragana, japanese, id } = edge.node;
       const { level, lastSeen } = edge;
-      return new Translation(japanese, hiragana, english, level, new Date(lastSeen));
+
+      const translation = new Translation(id, level, new Date(lastSeen), japanese, hiragana, english);
+      translationsMap.set(id, translation);
     });
+
+    translationData.forEach((edge: any) => {
+      const translation = translationsMap.get(edge.node.id);
+      edge.node.buildsUpon.forEach((reqTranslation: any) => {
+        const reqId = reqTranslation['id'];
+        if (translationsMap.has(reqId)) {
+          translation.addRequirement(translationsMap.get(reqId));
+        }
+      })
+    });
+
+    // Convert the map of Translation objects to an array
+    const translations = Array.from(translationsMap.values());
 
     console.log('Returning data', translations);
     return translations;
@@ -70,6 +92,7 @@ export async function fetchUserProgress(userName: string): Promise<Translation[]
     throw error;
   }
 }
+
 
 export async function updateUserProgress(userName: string, translations: Translation[]): Promise<JSON> {
   console.log('Called updateUserProgress with userName ' + userName + ' translations ' + translations);
