@@ -28,15 +28,13 @@ ON CREATE SET v.hiragana = row.hiragana, v.english = row.english;
 3. Add sentences with:
 
 ```
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/DaylonSrinivasan/Japanese/main/data/sentences.csv/{token}' AS row
-MERGE (v:Sentence:Translation {japanese: row.japanese})
-ON CREATE SET v.hiragana = row.hiragana, v.english = row.english;
-
-// Assuming the vocabulary words are already loaded into the graph as Vocabulary nodes
-MATCH (s:Sentence:Translation), (v:Vocabulary)
-WHERE s.japanese =~ ".*" + v.japanese + ".*"
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/DaylonSrinivasan/Japanese/main/data/sentences.csv?{token}' AS row
+MERGE (s:Sentence:Translation {japanese: row.japanese})
+ON CREATE SET s.hiragana = row.hiragana, s.english = row.english
+WITH s, split(row.vocabularies, '|') as vocabList
+UNWIND vocabList as vocab
+MATCH (v:Vocabulary {japanese: vocab})
 MERGE (s)-[:BUILDS_UPON]->(v);
-
 ```
 
 4. Create connections between the user ("daylon") and newly added translations by entering:
