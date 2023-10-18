@@ -1,8 +1,8 @@
-Daylon's Japanese translation practice app.
+Daylon's Japanese studying app.
 
 # User Notes
 
-Visit the deployed version at: https://japanese-studying.vercel.app/translation-practice
+Visit the deployed version at: https://japanese-studying.vercel.app/translation
 
 # Developer Notes
 
