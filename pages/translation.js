@@ -7,7 +7,7 @@ import '../styles/translation_quiz.css';
 import { toKana } from 'wanakana';
 
 const USERNAME = 'daylon';
-const SIMILARITY_THRESHOLD = 0.8;
+const SIMILARITY_THRESHOLD = 0.6;
 const FEEDBACK_CORRECT = 'Correct!'
 const FEEDBACK_SIMILAR = 'Similar!'
 const FEEDBACK_INCORRECT = 'Incorrect!'
