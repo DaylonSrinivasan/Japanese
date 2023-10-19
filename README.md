@@ -22,7 +22,7 @@ This is used to populate our study data (such as Japanese vocab).
 ```
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/DaylonSrinivasan/Japanese/main/data/vocabulary.csv/{token}' AS row
 MERGE (v:Vocabulary:Translation {japanese: row.japanese})
-ON CREATE SET v.hiragana = row.hiragana, v.english = row.english, id = apoc.create.uuid();
+ON CREATE SET v.hiragana = row.hiragana, v.english = row.english, v.id = apoc.create.uuid();
 ```
 
 3. Add sentences with:
@@ -30,7 +30,7 @@ ON CREATE SET v.hiragana = row.hiragana, v.english = row.english, id = apoc.crea
 ```
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/DaylonSrinivasan/Japanese/main/data/sentences.csv?{token}' AS row
 MERGE (s:Sentence:Translation {japanese: row.japanese})
-ON CREATE SET s.hiragana = row.hiragana, s.english = row.english, id = apoc.create.uuid()
+ON CREATE SET s.hiragana = row.hiragana, s.english = row.english, s.id = apoc.create.uuid()
 WITH s, split(row.vocabularies, '|') as vocabList
 UNWIND vocabList as vocab
 MATCH (v:Vocabulary {japanese: vocab})
