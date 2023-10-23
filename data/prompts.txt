@@ -13,3 +13,14 @@ Can you generate a file called sentences.csv that specifically shows off sentenc
 綺麗だ。
 
 I want sentences.csv to contain at 10 sentences.
+
+....
+
+Great. I also have a vocabulary file called "vocabulary.csv". It looks something like this:
+
+japanese,hiragana,english
+元気,げんき,healthy
+美しい,うつくしい,beautiful
+暑い,あつい,hot
+
+Can you generate a CSV that contains all the vocabulary in the "vocabularies" column of sentences.csv?
