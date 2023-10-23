@@ -1,4 +1,4 @@
-japanese,hiragana,english,vocabularies
+japanese,hiragana,english,vocabularies,grammars
 彼は元気です,かれはげんきです,He is fine,元気
 彼女は美しいです,かのじょはうつくしいです,She is beautiful,美しい
 今日は暑い日です,きょうはあついひです,Today is a hot day,暑い|日
@@ -48,4 +48,14 @@ japanese,hiragana,english,vocabularies
 彼女は町で買い物をしました,かのじょはまちでかいものをしました,She went shopping in town,彼女|町|買い物
 春に新しい花が咲きます,はるにあたらしいはながさきます,New flowers bloom in spring,春|新しい|花|咲く
 私は家にいます,わたしはいえにいます,I am at home,家
+私だ,わたしだ,I am,私,だ
+綺麗だ,きれいだ,It is beautiful,綺麗,だ
+彼女は賢いだ,かのじょはかしこいだ,She is intelligent,彼女|賢い,だ
+これは新しいだ,これはあたらしいだ,This is new,これ|新しい,だ
+彼は静かだ,かれはしずかだ,He is quiet,彼|静か,だ
+それは難しいだ,それはむずかしいだ,It is difficult,それ|難しい,だ
+おいしいだ,おいしいだ,It's delicious,おいしい,だ
+彼らは元気だ,かれらはげんきだ,They are energetic,彼ら|元気,だ
+彼女たちは優しいだ,かのじょたちはやさしいだ,They are kind,彼女たち|優しい,だ
+天気はいいだ,てんきはいいだ,The weather is nice,天気|いい,だ
 
