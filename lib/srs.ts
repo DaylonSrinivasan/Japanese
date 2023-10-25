@@ -1,6 +1,6 @@
 export const LEVEL_DELAYS = [
     0,               // level 0: 0 second delay, not started.
-    15 * 1000,       // level 1: 15 second delay
+    8 * 1000,       // level 1: 8 second delay
     1 * 60 * 1000,   // level 2: 1 minute delay
     5 * 60 * 1000,   // level 3: 5 minute delay
     60 * 60 * 1000,  // level 4: 60 minute delay
