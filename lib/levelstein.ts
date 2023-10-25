@@ -1,4 +1,10 @@
-export function calculateSimilarity(str1: string, str2: string): number {  
+export const EQUIVALENT = 'equivalent';
+export const SIMILAR = 'similar';
+export const NOT_SIMILAR = 'not_similar';
+
+const SIMILARITY_THRESHOLD = 0.6;
+
+export function getSimilarity(str1: string, str2: string): string {
     function calculateLevenshteinDistance(s1: string, s2: string): number {
       const m = s1.length;
       const n = s2.length;
@@ -14,7 +20,6 @@ export function calculateSimilarity(str1: string, str2: string): number {
           );
         }
       }
-  
       return dp[m][n];
     }
   
@@ -22,6 +27,13 @@ export function calculateSimilarity(str1: string, str2: string): number {
     const maxLength = Math.max(str1.length, str2.length);
     const similarity = 1 - distance / maxLength;
     console.log('Similarity between ' + str1 + ' and ' + str2 + ' is ' + similarity);
-    return similarity;
+    if (similarity === 1.0) {
+      return EQUIVALENT;
+    }
+    else if (similarity >= SIMILARITY_THRESHOLD) {
+      return SIMILAR;
+    }
+    else {
+      return NOT_SIMILAR;
+    }
   }
-  

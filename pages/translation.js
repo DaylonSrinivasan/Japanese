@@ -2,12 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { fetchUserProgress, updateUserProgress } from '../lib/graphql_client';
 import { SRS } from '../lib/srs';
-import { calculateSimilarity } from '../lib/levelstein';
+import { getSimilarity, EQUIVALENT, SIMILAR } from '../lib/levelstein';
 import '../styles/translation_quiz.css';
 import { toKana } from 'wanakana';
 
 const USERNAME = 'daylon';
-const SIMILARITY_THRESHOLD = 0.6;
 const FEEDBACK_CORRECT = 'Correct!'
 const FEEDBACK_SIMILAR = 'Similar!'
 const FEEDBACK_INCORRECT = 'Incorrect!'
@@ -80,9 +79,13 @@ function TranslationQuiz() {
         setCorrectAnswer(`Correct Hiragana: ${currentTranslation.hiragana}`);
       } else if (quizPhase === 3) {
         // Phase 3: Check English.
-        const similarity = calculateSimilarity(userInput, currentTranslation.english);
-        if (similarity >= SIMILARITY_THRESHOLD) {
-          setFeedback(similarity === 1.0 ? FEEDBACK_CORRECT : FEEDBACK_SIMILAR);
+        const similarity = getSimilarity(userInput, currentTranslation.english);
+        if (similarity === EQUIVALENT) {
+          setFeedback(FEEDBACK_CORRECT);
+          setNumCorrectAnswers(numCorrectAnswers + 1);
+        }
+        else if (similarity === SIMILAR) {
+          setFeedback(FEEDBACK_SIMILAR);
           setNumCorrectAnswers(numCorrectAnswers + 1);
         }
         else {
