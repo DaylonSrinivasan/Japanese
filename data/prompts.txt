@@ -1,0 +1,29 @@
+# Generate sentences.csv
+
+I'm studying japanese. Help me by generating a file called "sentences.csv" that contains a japanese sentence, its hiragana pronounciation, its english translation, as well as the grammar point being utilized. Here is an example "sentences.csv" file:
+
+japanese,hiragana,english,vocabularies,grammar
+今日は暑い日です,きょうはあついひです,Today is a hot day,暑い|日,です
+昨日は雨が降りました,きのうはあめがふりました,It rained yesterday,昨日|雨,
+私の家は広いです,わたしのいえはひろいです,My house is spacious,家|広い,です
+
+Can you generate a file called sentences.csv that specifically shows off sentences that utilize the "と" grammar point? Here are some sample sentences:
+
+彼はとても親切だと聞きました。
+メモに「私は今から学校に行きます」と書いた。
+「彼はここに来ますか」と聞いた。
+「晩ごはんを作った」と言った。
+「重いですか」と聞きました。
+
+I want sentences.csv to contain at 10 sentences.
+
+....
+
+Great. I also have a vocabulary file called "vocabulary.csv". It looks something like this:
+
+japanese,hiragana,english
+元気,げんき,healthy
+美しい,うつくしい,beautiful
+暑い,あつい,hot
+
+Can you generate a CSV that contains all the vocabulary in the "vocabularies" column of sentences.csv?
