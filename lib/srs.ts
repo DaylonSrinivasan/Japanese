@@ -1,3 +1,16 @@
+export const LEVEL_DELAYS = [
+    0,               // level 0: 0 second delay, not started.
+    15 * 1000,       // level 1: 15 second delay
+    1 * 60 * 1000,   // level 2: 1 minute delay
+    5 * 60 * 1000,   // level 3: 5 minute delay
+    60 * 60 * 1000,  // level 4: 60 minute delay
+    6 * 60 * 60 * 1000,  // level 5: 3 hour delay
+    24 * 60 * 60 * 1000, // level 6: 24 hour delay
+    3 * 24 * 60 * 60 * 1000, // level 7: 3 day delay
+    7 * 24 * 60 * 60 * 1000, // level 8: 7 day delay
+    21 * 24 * 60 * 60 * 1000  // level 9: 21 day delay
+];
+
 // https://chat.openai.com/share/bad7dc23-ac9e-484b-a0a9-3be2a477db5d
 export abstract class SRSItem {
     id: string;
@@ -38,24 +51,10 @@ export class SRS {
         this._items = newItems;
     }
 
-    private levelDelays = [
-        0,               // level 0: 0 second delay, not started.
-        15 * 1000,       // level 1: 15 second delay
-        1 * 60 * 1000,   // level 2: 1 minute delay
-        5 * 60 * 1000,   // level 3: 5 minute delay
-        60 * 60 * 1000,  // level 4: 60 minute delay
-        6 * 60 * 60 * 1000,  // level 5: 3 hour delay
-        24 * 60 * 60 * 1000, // level 6: 24 hour delay
-        3 * 24 * 60 * 60 * 1000, // level 7: 3 day delay
-        7 * 24 * 60 * 60 * 1000, // level 8: 7 day delay
-        21 * 24 * 60 * 60 * 1000  // level 9: 21 day delay
-    ];
-    
-
     getNext(): SRSItem {
         const now = new Date();
         const eligibleItems = this._items.filter(item => {
-            const levelDelay = this.levelDelays[item.level];
+            const levelDelay = LEVEL_DELAYS[item.level];
 
             // Check if the item itself is eligible based on its level and lastSeen
             const isTimeEligible = now.getTime() >= item.lastSeen.getTime() + levelDelay;
@@ -108,7 +107,7 @@ export class SRS {
         item.level = Math.max(item.level, 1); // This item has been seen, so it will be at least level 1.
         item.lastSeen = new Date();
         if (success) {
-            item.level = Math.min(item.level + 1, this.levelDelays.length - 1);
+            item.level = Math.min(item.level + 1, LEVEL_DELAYS.length - 1);
         } else {
             item.level = 1;
         }

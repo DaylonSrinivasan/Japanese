@@ -6,6 +6,8 @@ import {
   } from "@apollo/client";
 
 import Translation from '../resources/translation'
+
+import { LEVEL_DELAYS } from './srs'
   
 const client = new ApolloClient({
     link: new HttpLink({ uri: '/api/graphql' }),
@@ -60,8 +62,12 @@ export async function fetchUserProgress(userName: string): Promise<Translation[]
       query: FETCH_USER_PROGRESS,
       variables: { userName },
     });
+    const oneHour = 60 * 60 * 1000;
+    const now = new Date();
 
-    const translationData = data.users[0]?.translationConnection.edges || [];
+    const translationData = (data.users[0]?.translationConnection.edges || [])
+    .filter((edge: any) => now.getTime() + oneHour >= new Date(edge.lastSeen).getTime() + LEVEL_DELAYS[edge.level]);
+
     const translationsMap = new Map();
 
     translationData.forEach((edge: any) => {
