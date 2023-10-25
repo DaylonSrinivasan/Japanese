@@ -65,6 +65,8 @@ export async function fetchUserProgress(userName: string): Promise<Translation[]
     const oneHour = 60 * 60 * 1000;
     const now = new Date();
 
+    // TODO(daylon) - this filter removes all items not appearing in the next hour.
+    // That breaks the "/progress" page, since it won't show things that it should.
     const translationData = (data.users[0]?.translationConnection.edges || [])
     .filter((edge: any) => now.getTime() + oneHour >= new Date(edge.lastSeen).getTime() + LEVEL_DELAYS[edge.level]);
 
