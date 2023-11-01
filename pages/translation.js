@@ -1,7 +1,7 @@
 // TranslationQuiz.js
 import React, { useState, useEffect } from 'react';
 import { fetchUserProgress, updateUserProgress } from '../lib/graphql_client';
-import { SRS } from '../lib/srs';
+import { LEVEL_DELAYS, SRS } from '../lib/srs';
 import { getSimilarity, EQUIVALENT, SIMILAR } from '../lib/levelstein';
 import '../styles/translation_quiz.css';
 import { toKana } from 'wanakana';
@@ -25,7 +25,10 @@ function TranslationQuiz() {
     async function loadTranslations() {
       try {
         const fetchedTranslations = await fetchUserProgress(USERNAME);
-        setSRS(new SRS(fetchedTranslations));
+        const oneHour = 60 * 60 * 1000;
+        const now = new Date();
+        const translationsToQuiz = fetchedTranslations.filter((translation) => now.getTime() + oneHour >= translation.lastSeen.getTime() + LEVEL_DELAYS[translation.level]);
+        setSRS(new SRS(translationsToQuiz));
         setCurrentTranslation(srs.getNext());
         setQuizPhase(1); // Start with phase 1 (Hiragana).
       } catch (error) {
