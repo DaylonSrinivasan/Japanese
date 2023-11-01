@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUserProgress, updateUserProgress } from '../lib/graphql_client';
+import { LEVEL_DELAYS } from '../lib/srs';
 import '../styles/progress.css'
 
 function UserProfilePage() {
@@ -44,12 +45,20 @@ function UserProfilePage() {
     }
   };
 
-  // Sort the translations by level and lastSeen in ascending order
+  translations.forEach((translation) => {
+    const now = new Date();
+    translation.millisUntilNextQuiz = Math.floor(Math.max(0, translation.lastSeen.getTime() + LEVEL_DELAYS[translation.level] - now.getTime()));
+  })
+
+  // Sort the translations by millisUntilNextQuiz, level and lastSeen in ascending order
   translations.sort((a, b) => {
-    if (a.level !== b.level) {
+    if (a.millisUntilNextQuiz !== b.millisUntilNextQuiz) {
+      return a.millisUntilNextQuiz - b.millisUntilNextQuiz;
+    }
+    else if (a.level !== b.level) {
       return b.level - a.level;
     } else {
-      return new Date(a.lastSeen) - new Date(b.lastSeen);
+      return a.lastSeen - b.lastSeen;
     }
   });
 
@@ -70,6 +79,7 @@ function UserProfilePage() {
                 <th>Hiragana</th>
                 <th>Level</th>
                 <th>Last Seen</th>
+                <th>Time until next quiz</th>
               </tr>
             </thead>
             <tbody>
@@ -80,6 +90,7 @@ function UserProfilePage() {
                   <td>{translation.hiragana}</td>
                   <td>{translation.level}</td>
                   <td>{new Date(translation.lastSeen).toLocaleString()}</td>
+                  <td>{getTimeUntil(translation.millisUntilNextQuiz)}</td>
                 </tr>
               ))}
             </tbody>
@@ -91,6 +102,28 @@ function UserProfilePage() {
       )}
     </div>
   );
+}
+
+function getTimeUntil(timeInMillis) {
+  const days = Math.floor(timeInMillis / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeInMillis % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((timeInMillis % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeInMillis % (1000 * 60) / 1000));
+
+  let formattedTime = '';
+  
+  if (days > 0) {
+    formattedTime += `${days} days, `;
+  }
+  if (hours > 0) {
+    formattedTime += `${hours} hours, `;
+  }
+  if (minutes > 0) {
+    formattedTime += `${minutes} minutes, `;
+  }
+  formattedTime += `${seconds} seconds`;
+
+  return formattedTime;
 }
 
 export default UserProfilePage;
