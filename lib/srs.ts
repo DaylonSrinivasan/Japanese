@@ -8,7 +8,8 @@ export const LEVEL_DELAYS = [
     24 * 60 * 60 * 1000, // level 6: 24 hour delay
     3 * 24 * 60 * 60 * 1000, // level 7: 3 day delay
     7 * 24 * 60 * 60 * 1000, // level 8: 7 day delay
-    21 * 24 * 60 * 60 * 1000  // level 9: 21 day delay
+    21 * 24 * 60 * 60 * 1000,  // level 9: 21 day delay
+    90 * 24 * 60 * 60 * 1000,  // level 10: 90 day delay
 ];
 
 // https://chat.openai.com/share/bad7dc23-ac9e-484b-a0a9-3be2a477db5d
@@ -109,7 +110,7 @@ export class SRS {
         if (success) {
             item.level = Math.min(item.level + 1, LEVEL_DELAYS.length - 1);
         } else {
-            item.level = 1;
+            item.level = Math.max(1, item.level - 2);
         }
     }
 }
