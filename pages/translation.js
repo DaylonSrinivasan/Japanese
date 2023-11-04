@@ -70,15 +70,22 @@ function TranslationQuiz() {
     const { targetCharacterSet, japanese, hiragana, english } = currentTranslation;
 
     let feedback = FEEDBACK_INCORRECT;
-    if (targetCharacterSet === 'japanese') feedback = userInput === japanese ? FEEDBACK_CORRECT : FEEDBACK_INCORRECT;
-    if (targetCharacterSet === 'hiragana') feedback = hiraganaInput === hiragana ? FEEDBACK_CORRECT : FEEDBACK_INCORRECT;
+    let correctAnswer = '';
+    if (targetCharacterSet === 'japanese') {
+      feedback = (userInput === japanese || hiraganaInput === hiragana) ? FEEDBACK_CORRECT : FEEDBACK_INCORRECT;
+      correctAnswer = `Japanese: ${japanese}. Hiragana: ${hiragana}`;
+    }
+    if (targetCharacterSet === 'hiragana') {
+      feedback = hiraganaInput === hiragana ? FEEDBACK_CORRECT : FEEDBACK_INCORRECT;
+      correctAnswer = `Hiragana: ${hiragana}`;
+    }
     if (targetCharacterSet === 'english') {
       const similarity = getSimilarity(userInput, english);
       feedback = similarity === EQUIVALENT ? FEEDBACK_CORRECT : similarity === SIMILAR ? FEEDBACK_SIMILAR : FEEDBACK_INCORRECT;
+      correctAnswer = `English: ${english}`;
     }
-
     setFeedback(feedback);
-    setCorrectAnswer(`Correct ${targetCharacterSet}: ${currentTranslation[targetCharacterSet]}`);
+    setCorrectAnswer(correctAnswer);
     setQuizPhase(FEEDBACK_PHASE);
   };
 
@@ -113,7 +120,7 @@ function TranslationQuiz() {
           <p>What is the {currentTranslation.targetCharacterSet}?</p>
           <input
             type="text"
-            value={currentTranslation.targetCharacterSet === 'hiragana' ? hiraganaInput : userInput}
+            value={currentTranslation.targetCharacterSet === 'hiragana' || currentTranslation.targetCharacterSet === 'japanese' ? hiraganaInput : userInput}
             onChange={handleInputChange}
             onKeyPress={handleEnterKey}
             className="translation-input"
