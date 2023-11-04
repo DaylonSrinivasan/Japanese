@@ -77,6 +77,7 @@ function UserProfilePage() {
                 <th>English</th>
                 <th>Japanese</th>
                 <th>Hiragana</th>
+                <th>Target Chacter Set</th>
                 <th>Level</th>
                 <th>Last Seen</th>
                 <th>Time until next quiz</th>
@@ -88,6 +89,7 @@ function UserProfilePage() {
                   <td>{translation.english}</td>
                   <td>{translation.japanese}</td>
                   <td>{translation.hiragana}</td>
+                  <td>{translation.targetCharacterSet}</td>
                   <td>{translation.level}</td>
                   <td>{new Date(translation.lastSeen).toLocaleString()}</td>
                   <td>{getTimeUntil(translation.millisUntilNextQuiz)}</td>

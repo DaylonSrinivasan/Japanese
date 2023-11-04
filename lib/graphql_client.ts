@@ -17,6 +17,7 @@ query FetchUserProgress($userName: String!) {
   users(where: { name: $userName }) {
     translationConnection {
       edges {
+        targetCharacterSet
         level
         lastSeen
         node {
@@ -66,18 +67,20 @@ export async function fetchUserProgress(userName: string): Promise<Translation[]
 
     translationData.forEach((edge: any) => {
       const { english, hiragana, japanese, id } = edge.node;
-      const { level, lastSeen } = edge;
-
-      const translation = new Translation(id, level, new Date(lastSeen), japanese, hiragana, english);
-      translationsMap.set(id, translation);
+      const { targetCharacterSet, level, lastSeen } = edge;
+      const translation = new Translation(id, level, new Date(lastSeen), targetCharacterSet, japanese, hiragana, english);
+      const key = id + targetCharacterSet;
+      translationsMap.set(key, translation);
     });
 
     translationData.forEach((edge: any) => {
-      const translation = translationsMap.get(edge.node.id);
+      const key = edge.node.id + edge.targetCharacterSet;
+      const translation = translationsMap.get(key);
       edge.node.buildsUpon.forEach((reqTranslation: any) => {
         const reqId = reqTranslation['id'];
-        if (translationsMap.has(reqId)) {
-          translation.addRequirement(translationsMap.get(reqId));
+        const key = reqId + translation.targetCharacterSet;
+        if (translationsMap.has(key)) {
+          translation.addRequirement(translationsMap.get(key));
         }
       })
     });
@@ -106,9 +109,12 @@ export async function updateUserProgress(userName: string, translations: Transla
           },
         },
         where: {
-          node: {
-            japanese: translation.japanese,
-          },
+          AND: {
+            edge: {targetCharacterSet: translation.targetCharacterSet},
+            node: {
+              japanese: translation.japanese,
+            }
+          }
         },
       };
     });

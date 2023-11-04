@@ -10,6 +10,8 @@ const USERNAME = 'daylon';
 const FEEDBACK_CORRECT = 'Correct!'
 const FEEDBACK_SIMILAR = 'Similar!'
 const FEEDBACK_INCORRECT = 'Incorrect!'
+const QUESTION_PHASE = 'QuestionPhase'
+const FEEDBACK_PHASE = 'FeedbackPhase'
 
 function TranslationQuiz() {
   const [currentTranslation, setCurrentTranslation] = useState(null);
@@ -17,9 +19,8 @@ function TranslationQuiz() {
   const [hiraganaInput, setHiraganaInput] = useState(''); // Store the converted hiragana input
   const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
-  const [numCorrectAnswers, setNumCorrectAnswers] = useState(0);
   const [srs, setSRS] = useState(null);
-  const [quizPhase, setQuizPhase] = useState(1); // 1: Hiragana, 2: Hiragana Feedback, 3: English, 4: English Feedback
+  const [quizPhase, setQuizPhase] = useState(QUESTION_PHASE); // Either QUESTION_PHASE or FEEDBACK_PHASE
 
   useEffect(() => {
     async function loadTranslations() {
@@ -30,19 +31,18 @@ function TranslationQuiz() {
         const translationsToQuiz = fetchedTranslations.filter((translation) => now.getTime() + oneHour >= translation.lastSeen.getTime() + LEVEL_DELAYS[translation.level]);
         setSRS(new SRS(translationsToQuiz));
         setCurrentTranslation(srs.getNext());
-        setQuizPhase(1); // Start with phase 1 (Hiragana).
+        setQuizPhase(QUESTION_PHASE); // Start with question phase.
       } catch (error) {
         console.error('Error fetching translations', error);
       }
     }
-
     loadTranslations();
   }, []);
 
   useEffect(() => {
     if (srs !== null) {
       setCurrentTranslation(srs.getNext());
-      setQuizPhase(1); // Start with phase 1 (Hiragana).
+      setQuizPhase(QUESTION_PHASE);
     }
   }, [srs]);
 
@@ -50,68 +50,47 @@ function TranslationQuiz() {
     const input = event.target.value;
     setUserInput(input); // Keep track of the raw user input
 
-    // Conditionally convert to hiragana only when quizzing hiragana.
-    const convertedHiragana = quizPhase === 1 ? toKana(input, { IMEMode: 'Romaji' }) : input;
+    const convertedHiragana = toKana(input, { IMEMode: 'Romaji' });
     setHiraganaInput(convertedHiragana);
   };
 
   const handleEnterKey = (event) => {
     if (event.key === 'Enter') {
-      if (quizPhase === 1 || quizPhase === 3) {
-        // Phase 1 or 3: Check the answer and move to the feedback phase.
+      if (quizPhase === QUESTION_PHASE) {
         checkAnswer();
-      } else if (quizPhase === 2 || quizPhase === 4) {
-        // Phase 2 or 4: Move to the next question and reset feedback.
+      }
+      else {
         nextQuestion();
       }
     }
   };
 
   const checkAnswer = () => {
-    if (currentTranslation) {
-      let success = false;
-      let correctAnswer = '';
+    if (!currentTranslation) return;
+    const { targetCharacterSet, japanese, hiragana, english } = currentTranslation;
 
-      if (quizPhase === 1) {
-        // Phase 1: Check Hiragana.
-        const success = hiraganaInput === currentTranslation.hiragana;
-        setFeedback(success ? FEEDBACK_CORRECT : FEEDBACK_INCORRECT);
-        if (success) {
-          setNumCorrectAnswers(numCorrectAnswers + 1);
-        }
-        setCorrectAnswer(`Correct Hiragana: ${currentTranslation.hiragana}`);
-      } else if (quizPhase === 3) {
-        // Phase 3: Check English.
-        const similarity = getSimilarity(userInput, currentTranslation.english);
-        if (similarity === EQUIVALENT) {
-          setFeedback(FEEDBACK_CORRECT);
-          setNumCorrectAnswers(numCorrectAnswers + 1);
-        }
-        else if (similarity === SIMILAR) {
-          setFeedback(FEEDBACK_SIMILAR);
-          setNumCorrectAnswers(numCorrectAnswers + 1);
-        }
-        else {
-          setFeedback(FEEDBACK_INCORRECT);
-        }
-        setCorrectAnswer(`Correct English: ${currentTranslation.english}`);
-      }
-      setQuizPhase(quizPhase + 1); // Move to the feedback phase.
+    let feedback = FEEDBACK_INCORRECT;
+    if (targetCharacterSet === 'japanese') feedback = userInput === japanese ? FEEDBACK_CORRECT : FEEDBACK_INCORRECT;
+    if (targetCharacterSet === 'hiragana') feedback = hiraganaInput === hiragana ? FEEDBACK_CORRECT : FEEDBACK_INCORRECT;
+    if (targetCharacterSet === 'english') {
+      const similarity = getSimilarity(userInput, english);
+      feedback = similarity === EQUIVALENT ? FEEDBACK_CORRECT : similarity === SIMILAR ? FEEDBACK_SIMILAR : FEEDBACK_INCORRECT;
     }
+
+    setFeedback(feedback);
+    setCorrectAnswer(`Correct ${targetCharacterSet}: ${currentTranslation[targetCharacterSet]}`);
+    setQuizPhase(FEEDBACK_PHASE);
   };
 
   const nextQuestion = () => {
+    srs.processFeedback(currentTranslation, feedback === FEEDBACK_CORRECT || feedback === FEEDBACK_SIMILAR);
+    handleSaveProgress(currentTranslation);
+    setCurrentTranslation(srs.getNext());
     setFeedback('');
     setUserInput('');
-    setHiraganaInput(''); // Clear the converted hiragana input
+    setHiraganaInput('');
     setCorrectAnswer('');
-    setQuizPhase((quizPhase % 4) + 1); // Move to the next question phase (1 to 4).
-    if (quizPhase === 4) {
-      srs.processFeedback(currentTranslation, numCorrectAnswers === 2);
-      handleSaveProgress(currentTranslation);
-      setNumCorrectAnswers(0);
-      setCurrentTranslation(srs.getNext()); // Advance to the next question.
-    }
+    setQuizPhase(QUESTION_PHASE); // Move to the next question phase
   };
 
   const handleSaveProgress = async (translation) => {
@@ -128,32 +107,30 @@ function TranslationQuiz() {
       <div className="translation-header text-center">
         <h2>Translation Quiz</h2>
       </div>
-
       {currentTranslation && (
         <div className="translation-card">
-          <p>Japanese: {currentTranslation.japanese}</p>
-          {quizPhase === 1 || quizPhase === 2 ? (
-            <>
-              <p>{'What is the hiragana reading?'}</p>
-            </>
-          ) : (
-            <>
-              <p>{'What is the English reading?'}</p>
-            </>
-          )}
+          <p>{currentTranslation.targetCharacterSet === 'japanese' ? 'English' : 'Japanese'}: {currentTranslation.targetCharacterSet === 'japanese' ? currentTranslation.english : currentTranslation.japanese}</p>
+          <p>What is the {currentTranslation.targetCharacterSet}?</p>
           <input
             type="text"
-            value={hiraganaInput}
+            value={currentTranslation.targetCharacterSet === 'hiragana' ? hiraganaInput : userInput}
             onChange={handleInputChange}
             onKeyPress={handleEnterKey}
             className="translation-input"
           />
-          <p className={`translation-feedback ${feedback === FEEDBACK_CORRECT || feedback === FEEDBACK_SIMILAR ? 'correct-answer' : feedback === FEEDBACK_INCORRECT ? 'incorrect-feedback' : ''}`}>{feedback}</p>
-          {feedback === FEEDBACK_INCORRECT && (
+          <p
+            className={`translation-feedback ${
+              feedback === FEEDBACK_CORRECT || feedback === FEEDBACK_SIMILAR
+                ? 'correct-answer'
+                : feedback === FEEDBACK_INCORRECT
+                ? 'incorrect-feedback'
+                : ''
+            }`}
+          >
+            {feedback}
+          </p>
+          {(feedback === FEEDBACK_INCORRECT || feedback === FEEDBACK_SIMILAR) && (
             <p className="correct-answer">{correctAnswer}</p>
-          )}
-          {feedback === FEEDBACK_SIMILAR && (
-            <p className="similar-feedback">{correctAnswer}</p>
           )}
           <p>Level: {currentTranslation.level}</p>
           <p>Last Seen: {currentTranslation.lastSeen.toLocaleString()}</p>
@@ -161,6 +138,7 @@ function TranslationQuiz() {
       )}
     </div>
   );
+  
 }
 
 export default TranslationQuiz;

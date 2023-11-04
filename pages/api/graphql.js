@@ -21,6 +21,7 @@ const typeDefs = /* GraphQL */ `
   }
 
   interface StudiesProperties @relationshipProperties {
+    targetCharacterSet: String!
     level: Int!
     lastSeen: DateTime!
   }

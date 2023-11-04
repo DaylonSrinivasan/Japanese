@@ -42,8 +42,20 @@ MERGE (s)-[:BUILDS_UPON]->(v);
 ```
 MATCH (user:User {name: "daylon"})
 MATCH (translation:Translation)
-WHERE NOT (user)-[:STUDIES]->(translation)
-CREATE (user)-[r:STUDIES {level: 0, lastSeen: datetime()}]->(translation)
+WHERE NOT (user)-[:STUDIES {targetCharacterSet: "japanese"}]->(translation)
+CREATE (user)-[r:STUDIES {targetCharacterSet: "japanese", level: 0, lastSeen: datetime()}]->(translation)
+RETURN r;
+
+MATCH (user:User {name: "daylon"})
+MATCH (translation:Translation)
+WHERE NOT (user)-[:STUDIES {targetCharacterSet: "hiragana"}]->(translation)
+CREATE (user)-[r:STUDIES {targetCharacterSet: "hiragana", level: 0, lastSeen: datetime()}]->(translation)
+RETURN r;
+
+MATCH (user:User {name: "daylon"})
+MATCH (translation:Translation)
+WHERE NOT (user)-[:STUDIES {targetCharacterSet: "english"}]->(translation)
+CREATE (user)-[r:STUDIES {targetCharacterSet: "english", level: 0, lastSeen: datetime()}]->(translation)
 RETURN r;
 ```
 
