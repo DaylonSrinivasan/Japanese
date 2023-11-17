@@ -91,10 +91,9 @@ export class SRS {
                 return 1;
             }
             else {
-                if (a.level === b.level) {
-                    return a.lastSeen.getTime() - b.lastSeen.getTime();
-                }
-                return b.level - a.level;
+                const timeComparison = a.lastSeen.getTime() - b.lastSeen.getTime();
+                const randomOffset = Math.random() * 0.000001;
+                return timeComparison + randomOffset;
             }
         });
         console.log('The following item was chosen: ' + eligibleItems[0]);
