@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {SRSItem, SRS} from '../lib/srs.ts';
+import { SRSItem, SRS } from '../lib/srs.ts';
 import { VERB_CONJUGATIONS } from '../data/verb_conjugations.js';
 import '../styles/conjugation_quiz.css'; // Import your CSS file
 
@@ -16,6 +16,8 @@ class SRSElement extends SRSItem {
   }
 }
 
+const ALL_CONJUGATIONS = ["negative", "polite", "polite_negative", "past", "past_negative", "past_polite", "past_polite_negative", "te"]
+
 function App() {
   const [quizData, setQuizData] = useState(null);
   const [userAnswer, setUserAnswer] = useState('');
@@ -23,13 +25,16 @@ function App() {
   const [enterPressCount, setEnterPressCount] = useState(0);
   const [srs, setSRS] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedConjugations, setSelectedConjugations] = useState([]);
+
 
   useEffect(() => {
     const rowsToUse = selectedRows.length === 0 ? Array.from({ length: VERB_CONJUGATIONS.length }, (_, i) => i) : selectedRows;
+    const conjugationsToUse = selectedConjugations.length === 0 ? ALL_CONJUGATIONS : selectedConjugations;
     const initialSRSData = [];
-    
+
     for (const row of rowsToUse) {
-      for (const conjugation of Object.keys(VERB_CONJUGATIONS[row]).filter((key) => key !== 'dictionary')) {
+      for (const conjugation of conjugationsToUse) {
         initialSRSData.push(new SRSElement(row, conjugation));
       }
     }
@@ -39,7 +44,7 @@ function App() {
       srs.items = initialSRSData;
       startNewQuiz();
     }
-  }, [selectedRows]);
+  }, [selectedRows, selectedConjugations]);
 
   useEffect(() => {
     if (srs !== null) {
@@ -51,7 +56,7 @@ function App() {
     const verb = VERB_CONJUGATIONS[quizElement.index];
     const conjugationToQuiz = verb[quizElement.conjugation];
     const japaneseSentenceWithoutConjugation = conjugationToQuiz.sentence.japanese.replace(conjugationToQuiz.conjugation, '____');
-  
+
     return {
       verb: verb.dictionary,
       element: quizElement,
@@ -61,17 +66,17 @@ function App() {
       englishSentence: conjugationToQuiz.sentence.english,
     };
   };
-  
-  
+
+
 
   const handleKeyUp = (e) => {
     if (e.key === 'Enter') {
       setEnterPressCount(enterPressCount + 1);
-  
+
       if (enterPressCount % 2 === 0) {
         // Even number of Enter presses, check if the answer is correct
         const isCorrect = userAnswer === quizData.correctAnswer;
-  
+
         if (isCorrect) {
           setFeedback(<p className="correct-feedback">Correct! Press Enter for a new quiz.</p>);
         } else {
@@ -94,6 +99,17 @@ function App() {
     setUserAnswer('');
     setFeedback('');
     setEnterPressCount(0);
+  };
+
+  const toggleConjugationSelection = (conjugation) => {
+    setSelectedConjugations(current => {
+      const isAlreadySelected = current.includes(conjugation);
+      if (isAlreadySelected) {
+        return current.filter(item => item !== conjugation);
+      } else {
+        return [...current, conjugation];
+      }
+    });
   };
 
   const toggleRowSelection = (index) => {
@@ -137,16 +153,16 @@ function App() {
       <table className="conjugation-table">
         <thead>
           <tr>
-            <th>Verb</th>
             <th>Dictionary</th>
-            <th>Negative</th>
-            <th>Polite</th>
-            <th>Polite Negative</th>
-            <th>Past</th>
-            <th>Past Negative</th>
-            <th>Past Polite</th>
-            <th>Past Polite Negative</th>
-            <th>Te-form</th>
+            {ALL_CONJUGATIONS.map((conjugation) => (
+              <th
+                key={conjugation}
+                className={selectedConjugations.includes(conjugation) ? 'selected-conjugation' : ''}
+                onClick={() => toggleConjugationSelection(conjugation)}
+              >
+                {conjugation}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -156,7 +172,6 @@ function App() {
               className={selectedRows.includes(index) ? 'selected-row' : ''}
               onClick={() => toggleRowSelection(index)}
             >
-              <td>{verb.dictionary}</td>
               <td>{verb.dictionary}</td>
               <td>{verb.negative.conjugation}</td>
               <td>{verb.polite.conjugation}</td>
