@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import {SRSItem, SRS} from '../lib/srs.ts'; // Import the SRS module (adjust the path as needed)
+import {SRSItem, SRS} from '../lib/srs.ts';
 import { ADJECTIVE_CONJUGATIONS } from '../data/adjective_conjugations.js';
-import '../styles/conjugation_quiz.css'; // Import your CSS file
+import '../styles/conjugation_quiz.css';
 
 class SRSElement extends SRSItem {
   constructor(index, conjugation) {
-    super(0, new Date());
+    super(0, 0, new Date());
     this.index = index;
     this.conjugation = conjugation;
   }
@@ -35,7 +35,7 @@ function App() {
     if (srs === null) {
       setSRS(new SRS(initialSRSData));
     } else {
-      srs.items = initialSRSData; // Use the setter to update SRS items
+      srs.items = initialSRSData;
       startNewQuiz();
     }
   }, [selectedRows]);
@@ -63,19 +63,15 @@ function App() {
 
 
   const handleKeyUp = (e) => {
-    if (!quizData) {
-      return;
-    }
     if (e.key === 'Enter') {
       setEnterPressCount(enterPressCount + 1);
   
       if (enterPressCount % 2 === 0) {
         const isCorrect = userAnswer === quizData.correctAnswer;
+
         if (isCorrect) {
-          // Correct answer
           setFeedback(<p className="correct-feedback">Correct! Press Enter for a new quiz.</p>);
         } else {
-          // Incorrect answer
           setFeedback(
             <p className="incorrect-feedback">
               Incorrect. The correct answer is:

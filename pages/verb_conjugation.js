@@ -1,39 +1,64 @@
 import React, { useState, useEffect } from 'react';
+import {SRSItem, SRS} from '../lib/srs.ts';
 import { VERB_CONJUGATIONS } from '../data/verb_conjugations.js';
 import '../styles/conjugation_quiz.css'; // Import your CSS file
+
+
+class SRSElement extends SRSItem {
+  constructor(index, conjugation) {
+    super(0, 0, new Date());
+    this.index = index;
+    this.conjugation = conjugation;
+  }
+
+  toString() {
+    return `SRSElement { index: ${this.index}, conjugation: ${this.conjugation}}`;
+  }
+}
 
 function App() {
   const [quizData, setQuizData] = useState(null);
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState('');
   const [enterPressCount, setEnterPressCount] = useState(0);
+  const [srs, setSRS] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
 
   useEffect(() => {
-    setQuizData(getRandomQuizData());
-    setUserAnswer('');
-    setFeedback('');
-    setEnterPressCount(0);
-  }, []);
-
-  const getRandomQuizData = () => {
-    const selectedRowsEmpty = selectedRows.length === 0;
-    const sourceArray = selectedRowsEmpty ? VERB_CONJUGATIONS : selectedRows.map((index) => VERB_CONJUGATIONS[index]);
+    const rowsToUse = selectedRows.length === 0 ? Array.from({ length: VERB_CONJUGATIONS.length }, (_, i) => i) : selectedRows;
+    const initialSRSData = [];
     
-    const randomVerbIndex = Math.floor(Math.random() * sourceArray.length);
-    const verb = sourceArray[randomVerbIndex];
-    const conjugations = Object.keys(verb).filter((key) => key !== 'dictionary');
-    const randomConjugationIndex = Math.floor(Math.random() * conjugations.length);
-    const conjugationToQuiz = conjugations[randomConjugationIndex];
-  
-    const japaneseSentenceWithoutConjugation = verb[conjugationToQuiz].sentence.japanese.replace(verb[conjugationToQuiz].conjugation, '____');
+    for (const row of rowsToUse) {
+      for (const conjugation of Object.keys(VERB_CONJUGATIONS[row]).filter((key) => key !== 'dictionary')) {
+        initialSRSData.push(new SRSElement(row, conjugation));
+      }
+    }
+    if (srs === null) {
+      setSRS(new SRS(initialSRSData));
+    } else {
+      srs.items = initialSRSData;
+      startNewQuiz();
+    }
+  }, [selectedRows]);
+
+  useEffect(() => {
+    if (srs !== null) {
+      startNewQuiz();
+    }
+  }, [srs]);
+
+  const getQuizData = (quizElement) => {
+    const verb = VERB_CONJUGATIONS[quizElement.index];
+    const conjugationToQuiz = verb[quizElement.conjugation];
+    const japaneseSentenceWithoutConjugation = conjugationToQuiz.sentence.japanese.replace(conjugationToQuiz.conjugation, '____');
   
     return {
       verb: verb.dictionary,
-      conjugationToQuiz,
-      correctAnswer: verb[conjugationToQuiz].conjugation,
+      element: quizElement,
+      conjugationToQuiz: quizElement.conjugation,
+      correctAnswer: conjugationToQuiz.conjugation,
       japaneseSentence: japaneseSentenceWithoutConjugation.trim(),
-      englishSentence: verb[conjugationToQuiz].sentence.english,
+      englishSentence: conjugationToQuiz.sentence.english,
     };
   };
   
@@ -48,9 +73,7 @@ function App() {
         const isCorrect = userAnswer === quizData.correctAnswer;
   
         if (isCorrect) {
-          setFeedback(
-            <p className="correct-feedback">Correct! Press Enter for a new quiz.</p>
-          );
+          setFeedback(<p className="correct-feedback">Correct! Press Enter for a new quiz.</p>);
         } else {
           setFeedback(
             <p className="incorrect-feedback">
@@ -59,32 +82,31 @@ function App() {
             </p>
           );
         }
+        srs.processFeedback(quizData.element, isCorrect);
       } else {
-        // Odd number of Enter presses, start a new quiz
         startNewQuiz();
       }
     }
   };
-  
+
   const startNewQuiz = () => {
-    setQuizData(getRandomQuizData());
+    setQuizData(getQuizData(srs.getNext()));
     setUserAnswer('');
     setFeedback('');
     setEnterPressCount(0);
   };
 
   const toggleRowSelection = (index) => {
-    console.log('selecting row ' + index);
-    // Find the index of the clicked row in the selectedRows array
     const selectedIndex = selectedRows.indexOf(index);
+    const updatedSelectedRows = [...selectedRows];
 
     if (selectedIndex === -1) {
-      // If the row is not already selected, add it to the selectedRows array
-      setSelectedRows([...selectedRows, index]);
+      updatedSelectedRows.push(index);
     } else {
-      // If the row is already selected, remove it from the selectedRows array
-      setSelectedRows(selectedRows.filter((rowIndex) => rowIndex !== index));
+      updatedSelectedRows.splice(selectedIndex, 1);
     }
+
+    setSelectedRows(updatedSelectedRows);
   };
 
   return (
@@ -106,11 +128,7 @@ function App() {
             onKeyUp={handleKeyUp}
           />
           <div className="feedback-container">
-            {feedback && (
-              <div className={feedback === 'Correct! Press Enter for a new quiz.' ? 'correct-feedback' : 'incorrect-feedback'}>
-                {feedback}
-              </div>
-            )}
+            {feedback}
           </div>
         </div>
       )}
