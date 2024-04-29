@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SRSItem, SRS } from '../lib/srs.ts';
-import { VERB_CONJUGATIONS } from '../data/verb_conjugations.js';
-import '../styles/conjugation_quiz.css'; // Import your CSS file
+import { VERB_CONJUGATIONS } from '../data/verb_conjugations_hiragana.js';
+import '../styles/conjugation_quiz.css';
 
 
 class SRSElement extends SRSItem {

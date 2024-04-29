@@ -1,83 +1,78 @@
 /* Center the entire app content vertically and horizontally */
 .app-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; /* Adjust this to control the vertical centering */
-    text-align: center;
-  }
-  
-  /* Style the app title */
-  .app-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  /* Style the quiz container */
-  .quiz-container {
-    background-color: #f9f9f9;
-    width: 300px; /* Set the desired fixed height for the feedback container */
-    height: 300px; /* Set the desired fixed height for the feedback container */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
-  }
-  
-  /* Style the table title */
-  .table-title {
-    font-size: 20px;
-    margin-top: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: auto; /* Enable scrolling */
+}
+
+/* Style the app title */
+.app-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Style the quiz container */
+.quiz-container {
+  background-color: #f9f9f9;
+  width: 300px; /* Set the desired fixed width for the quiz container */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+/* Style the table title */
+.table-title {
+  font-size: 20px;
+  margin-top: 20px;
+}
 
 .feedback-container {
-    height: 50px; /* Set the desired fixed height for the feedback container */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .correct-feedback {
-    color: green;
-  }
-  
-  .incorrect-feedback {
-    color: red;
-  }
-  
-  
-  
-  /* Style the table */
-  .conjugation-table {
-    width: 80%; /* Adjust this to control the table width */
-    border-collapse: collapse;
-    text-align: left;
-  }
-  
-  /* Style table header */
-  .conjugation-table th.selected-conjugation {
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-  }
-  
-  /* Style table rows */
-  .conjugation-table td,
-  .conjugation-table th {
-    padding: 10px;
-    border: 1px solid #ddd;
-  }
-  
-  /* Style for selected rows */
-  tr.selected-row {
-    background-color: green; /* Change this to your desired highlight color */
-    color: white; /* Text color for selected rows, you can adjust it as needed */
-  }
+  height: 50px; /* Set the desired fixed height for the feedback container */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  
-  /* Style table cells */
-  .conjugation-table td {
-    font-size: 14px;
-  }
-  
+.correct-feedback {
+  color: green;
+}
+
+.incorrect-feedback {
+  color: red;
+}
+
+/* Style the table */
+.conjugation-table {
+  width: 80%; /* Adjust this to control the table width */
+  border-collapse: collapse;
+  text-align: left;
+}
+
+/* Style table header */
+.conjugation-table th.selected-conjugation {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+}
+
+/* Style table rows */
+.conjugation-table td,
+.conjugation-table th {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Style for selected rows */
+tr.selected-row {
+  background-color: green; /* Change this to your desired highlight color */
+  color: white; /* Text color for selected rows, you can adjust it as needed */
+}
+
+/* Style table cells */
+.conjugation-table td {
+  font-size: 14px;
+}
