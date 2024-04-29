@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SRSItem, SRS } from '../lib/srs.ts';
 import { VERB_CONJUGATIONS } from '../data/verb_conjugations_hiragana.js';
 import '../styles/conjugation_quiz.css';
+import { toKana } from 'wanakana';
 
 
 class SRSElement extends SRSItem {
@@ -16,11 +17,13 @@ class SRSElement extends SRSItem {
   }
 }
 
+const USE_HIRAGANA = true;
 const ALL_CONJUGATIONS = ["negative", "polite", "polite_negative", "past", "past_negative", "past_polite", "past_polite_negative", "te"]
 
 function App() {
   const [quizData, setQuizData] = useState(null);
   const [userAnswer, setUserAnswer] = useState('');
+  const [userAnswerHiragana, setUserAnswerHiragana] = useState('');
   const [feedback, setFeedback] = useState('');
   const [enterPressCount, setEnterPressCount] = useState(0);
   const [srs, setSRS] = useState(null);
@@ -75,7 +78,7 @@ function App() {
 
       if (enterPressCount % 2 === 0) {
         // Even number of Enter presses, check if the answer is correct
-        const isCorrect = userAnswer === quizData.correctAnswer;
+        const isCorrect = USE_HIRAGANA ? userAnswerHiragana === quizData.correctAnswer : userAnswer === quizData.correctAnswer;
 
         if (isCorrect) {
           setFeedback(<p className="correct-feedback">Correct! Press Enter for a new quiz.</p>);
@@ -97,6 +100,7 @@ function App() {
   const startNewQuiz = () => {
     setQuizData(getQuizData(srs.getNext()));
     setUserAnswer('');
+    setUserAnswerHiragana('');
     setFeedback('');
     setEnterPressCount(0);
   };
@@ -125,6 +129,14 @@ function App() {
     setSelectedRows(updatedSelectedRows);
   };
 
+  const handleInputChange = (event) => {
+    const input = event.target.value;
+    setUserAnswer(input);
+
+    const convertedHiragana = toKana(input, { IMEMode: 'Romaji' });
+    setUserAnswerHiragana(convertedHiragana);
+  };
+
   return (
     <div className="app-container">
       <h1 className="app-title">Verb Conjugation Quiz</h1>
@@ -139,8 +151,8 @@ function App() {
           <label>Your answer: </label>
           <input
             type="text"
-            value={userAnswer}
-            onChange={(e) => setUserAnswer(e.target.value)}
+            value={USE_HIRAGANA ? userAnswerHiragana : userAnswer}
+            onChange={handleInputChange}
             onKeyUp={handleKeyUp}
           />
           <div className="feedback-container">
