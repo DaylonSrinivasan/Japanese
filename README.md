@@ -1,4 +1,8 @@
-Daylon's Japanese studying app.
+## ⚠️ Note: This project is currently offline! ⚠️  
+
+This is Daylon's Japanese studying app!
+
+At the moment, the database is offline, so this project will note work. I hope to revive it in the future!
 
 # User Notes
 
