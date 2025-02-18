@@ -1,16 +1,8 @@
-## ⚠️ Note: This project is currently offline! ⚠️  
-
 This is Daylon's Japanese studying app!
-
-At the moment, the database is offline, so this project will note work. I hope to revive it in the future!
 
 # User Notes
 
 Visit the deployed version at: https://japanese-studying.vercel.app/translation
-
-# Developer Notes
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Required set-up
 
@@ -24,7 +16,7 @@ This is used to populate our study data (such as Japanese vocab).
 2. Add vocab with:
 
 ```
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/DaylonSrinivasan/Japanese/main/data/vocabulary.csv/{token}' AS row
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/DaylonSrinivasan/Japanese/main/data/vocabulary.csv' AS row
 MERGE (v:Vocabulary:Translation {japanese: row.japanese})
 ON CREATE SET v.hiragana = row.hiragana, v.english = row.english, v.id = apoc.create.uuid();
 ```
@@ -32,7 +24,7 @@ ON CREATE SET v.hiragana = row.hiragana, v.english = row.english, v.id = apoc.cr
 3. Add sentences with:
 
 ```
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/DaylonSrinivasan/Japanese/main/data/sentences.csv?{token}' AS row
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/DaylonSrinivasan/Japanese/main/data/sentences.csv' AS row
 MERGE (s:Sentence:Translation {japanese: row.japanese})
 ON CREATE SET s.hiragana = row.hiragana, s.english = row.english, s.id = apoc.create.uuid()
 WITH s, split(row.vocabularies, '|') as vocabList
@@ -44,7 +36,8 @@ MERGE (s)-[:BUILDS_UPON]->(v);
 4. Create connections between the user ("daylon") and newly added translations by entering:
 
 ```
-MATCH (user:User {name: "daylon"})
+MERGE (user:User {name: "daylon"})
+WITH user
 MATCH (translation:Translation)
 WHERE NOT (user)-[:STUDIES {targetCharacterSet: "japanese"}]->(translation)
 CREATE (user)-[r:STUDIES {targetCharacterSet: "japanese", level: 0, lastSeen: datetime()}]->(translation)
