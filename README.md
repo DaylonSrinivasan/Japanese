@@ -2,7 +2,12 @@ This is Daylon's Japanese studying app!
 
 # User Notes
 
-Visit the deployed version at: https://japanese-studying.vercel.app/translation
+Visit the deployed version at:
+1. https://japanese-studying.vercel.app/translation
+1. https://japanese-studying.vercel.app/progress
+1. https://japanese-studying.vercel.app/verb_conjugation
+1. https://japanese-studying.vercel.app/adjective_conjugation
+
 
 ## Required set-up
 
